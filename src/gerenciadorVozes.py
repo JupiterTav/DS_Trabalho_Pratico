@@ -6,9 +6,9 @@ class GerenciadorVozes:
     vozes = []
 
     def criar_vozes(self, texto: LeitorTexto()):
+        i = len(texto)
         for linha in texto.linhas:
-            voz = Voz()
-            voz.voz_texto = linha
+            voz = Voz(linha, 170, 20*i,  i)
             self.vozes.append(voz)
 
     def get_vozes(self):

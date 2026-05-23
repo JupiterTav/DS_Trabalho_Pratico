@@ -9,5 +9,9 @@ campoTexto.get_texto()
 
 gerenciador_vozes = GerenciadorVozes()
 gerenciador_vozes.criar_vozes(campoTexto)
+#TODO: 
+    # Criar Interpretador(Parser) para possibilitar comunicação dos dados das vozes (texto do usuario) com midi -> usando Mido
+    # Escrever arquivo midi com as vozes criadas
+
 
 gerenciador_vozes.get_vozes()
