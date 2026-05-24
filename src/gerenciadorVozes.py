@@ -17,5 +17,3 @@ class GerenciadorVozes:
 
     def len_vozes(self):
         return len(self.vozes)
-
-

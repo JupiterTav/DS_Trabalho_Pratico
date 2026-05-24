@@ -1,14 +1,14 @@
+"""
+#class Parametros:
 
-class Parametros:
+#    def __init__(self, bpm, volume, oitava):
+#        self.bpm = bpm
+#        self.volume = volume
+#        self.oitava = oitava
+#        self.nota = 00
+#        self.instrumento = 00
 
-    def __init__(self, bpm, volume, oitava):
-        self.bpm = bpm
-        self.volume = volume
-        self.oitava = oitava
-        self.nota = 00
-        self.instrumento = 00
-
-    def get_bpm(self):
+#    def get_bpm(self):
         return self.bpm
 
     def set_bpm(self, novoBpm):
@@ -28,4 +28,5 @@ class Parametros:
         self.oitava = novaOitava
 
     def set_nota(self, nota):
-        self.nota = nota
+     self.nota = nota
+     """
