@@ -3,10 +3,11 @@ from voz import Voz
 
 
 class GerenciadorVozes:
-    vozes = []
+    def __init__(self):
+        self.vozes = []
 
     def criar_vozes(self, texto: LeitorTexto()):
-        i = len(texto)
+        i = len(texto.linhas)
         for linha in texto.linhas:
             voz = Voz(linha, 170, 20*i,  i)
             self.vozes.append(voz)
@@ -15,5 +16,8 @@ class GerenciadorVozes:
         print(len(self.vozes))
         for voz in self.vozes:
             print(voz.voz_texto)
+
+    def len_vozes(self):
+        return len(self.vozes)
 
 

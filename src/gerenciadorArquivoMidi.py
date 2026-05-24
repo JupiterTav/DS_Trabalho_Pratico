@@ -1,0 +1,30 @@
+import os
+from interpretador import Interpretador
+from gerenciadorVozes import GerenciadorVozes
+
+
+class GerenciadorArquivoMidi:
+
+    def __init__(self):
+        self.midiFile = ""
+
+    def criarArquivo(self, caminho, vozes: GerenciadorVozes()):
+        if os.path.exists(caminho):
+            print("{} já existe. Deletando...", caminho)
+            os.remove("caminho")
+
+        os.makedirs(os.path.dirname(caminho), exist_ok=True)
+        if (".midi" or ".mid") in caminho:
+            self.midiFile = open(caminho, "w")
+        else:
+            self.midiFile = open(caminho + ".mid", "w")
+
+        self.__escreveHeaderChunck__(vozes)
+        self.midiFile.close()
+
+    def __escreveHeaderChunk__(self, vozes: GerenciadorVozes()):
+        with open(self.midiFile.name, 'a'):
+            header = "4d 54 68 64"  # MThd
+            headerLength = vozes.len_vozes()
+            self.midiFile.write(
+                    f"{header} 00 00 00 06 00 02 00 0{headerLength} 00 60")
