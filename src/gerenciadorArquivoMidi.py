@@ -19,8 +19,8 @@ class GerenciadorArquivoMidi:
         else:
             self.midiFile = open(caminho + ".mid", "w")
 
-        self.__escreveHeaderChunck__(vozes)
-        self.midiFile.close()
+        self.__escreveHeaderChunk__(vozes)
+        self.__escreveTrackChunk__(vozes)
 
     def __escreveHeaderChunk__(self, vozes: GerenciadorVozes()):
         with open(self.midiFile.name, 'a'):
@@ -29,8 +29,12 @@ class GerenciadorArquivoMidi:
             self.midiFile.write(
                     f"{header_label} 00 00 00 06 00 02 00 0{headerLength} 00 60")
 
-    def __escreveTrackChunk__(self, vozes: GerenciadorVozes(), _interpreador: Interpretador()):
+    def __escreveTrackChunk__(self, vozes= GerenciadorVozes(), _interpretador= Interpretador()):
         track_label = "4d 54 72 6b"  # MTrk
         with open(self.midiFile.name, 'a'):
             for voz in vozes.get_vozes():
-                self.midiFile.write(f" {track_label} ")
+                if '[' and ']' in voz.voz_texto and voz.voz_texto[0] == '[':
+                    close_bracket_index = voz.voz_texto.index(']')
+                    voz.set_atraso(int(voz.voz_texto[1:close_bracket_index]))
+                self.midiFile.write(f" {track_label} 00 00 00 8c 0{voz.get_atraso():x} ff 2f 00")
+            self.midiFile.close()

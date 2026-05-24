@@ -1,14 +1,10 @@
-from parametros import Parametros
-
-
 class Voz:
     def __init__(self, texto, bpm, volume, oitava):
         self.voz_texto = texto
-        self.parametros = Parametros(bpm, volume, oitava)
-        self.bpm = bpm
-        self.volume = volume
-        self.oitava = oitava
-
+        self.__bpm = bpm
+        self.__volume = volume
+        self.__oitava = oitava
+        self.__atraso = 00
         self.nota = 00
         self.instrumento = 00
 
@@ -33,3 +29,9 @@ class Voz:
 
     def set_nota(self, nota):
         self.nota = nota
+
+    def set_atraso(self, atraso):
+        self.__atraso = atraso
+
+    def get_atraso(self):
+        return self.__atraso
