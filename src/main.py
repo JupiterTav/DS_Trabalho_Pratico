@@ -15,4 +15,5 @@ gerenciador_vozes.criar_vozes(campoTexto)
     # Escrever arquivo midi com as vozes criadas
 gerenciador_midi = GerenciadorArquivoMidi()
 gerenciador_midi.criarArquivo("build/musica_gerada", gerenciador_vozes)
-gerenciador_vozes.get_vozes()
+
+gerenciador_midi.midiFile.read()

@@ -13,9 +13,7 @@ class GerenciadorVozes:
             self.vozes.append(voz)
 
     def get_vozes(self):
-        print(len(self.vozes))
-        for voz in self.vozes:
-            print(voz.voz_texto)
+        return self.vozes
 
     def len_vozes(self):
         return len(self.vozes)

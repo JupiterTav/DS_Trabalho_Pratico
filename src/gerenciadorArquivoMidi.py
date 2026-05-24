@@ -24,7 +24,13 @@ class GerenciadorArquivoMidi:
 
     def __escreveHeaderChunk__(self, vozes: GerenciadorVozes()):
         with open(self.midiFile.name, 'a'):
-            header = "4d 54 68 64"  # MThd
+            header_label = "4d 54 68 64"  # MThd
             headerLength = vozes.len_vozes()
             self.midiFile.write(
-                    f"{header} 00 00 00 06 00 02 00 0{headerLength} 00 60")
+                    f"{header_label} 00 00 00 06 00 02 00 0{headerLength} 00 60")
+
+    def __escreveTrackChunk__(self, vozes: GerenciadorVozes(), _interpreador: Interpretador()):
+        track_label = "4d 54 72 6b"  # MTrk
+        with open(self.midiFile.name, 'a'):
+            for voz in vozes.get_vozes():
+                self.midiFile.write(f" {track_label} ")

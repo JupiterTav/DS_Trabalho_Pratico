@@ -7,7 +7,6 @@ class Parametros:
         self.oitava = oitava
         self.nota = 00
         self.instrumento = 00
-        #self.instrumentos = {"O" : 109, "o" : 109, "I" : "U": 109, "u": 109, "!" : 23, ',': 113, ':': 14}
 
     def get_bpm(self):
         return self.bpm
