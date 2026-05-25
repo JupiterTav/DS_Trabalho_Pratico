@@ -9,20 +9,19 @@ class Voz:
         self.instrumento = 00
 
     def get_bpm(self):
-        return self.bpm
+        return self.__bpm
 
     def set_bpm(self, novoBpm):
         self.bpm = novoBpm
-        return self.bpm
 
     def get_volume(self):
-        return self.volume
+        return self.__volume
 
     def set_volume(self, novoVolume):
         self.volume = novoVolume
 
     def get_oitava(self):
-        return self.oitava
+        return self.__oitava
 
     def set_oitava(self, novaOitava):
         self.oitava = novaOitava

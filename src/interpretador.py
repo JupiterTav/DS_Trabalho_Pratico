@@ -2,14 +2,14 @@
 class Interpretador:
     def __init__(self):
         self.notas_midi = {
-            'A': '69',   # La
-            'B': '71',   # Si
-            'C': '60',   # Do
-            'D': '62',   # Re
-            'E': '64',   # Mi
-            'F': '65',   # Fa
-            'G': '67',   # Sol
-            'H': '70'    # Si Bemol
+            'A': '15',   # La (A0 = MIDI 21)
+            'B': '17',   # Si (B0 = MIDI 23)
+            'C': '0C',   # Do (C0 = MIDI 12)
+            'D': '0E',   # Re (D0 = MIDI 14)
+            'E': '10',   # Mi (E0 = MIDI 16)
+            'F': '11',   # Fa (F0 = MIDI 17)
+            'G': '13',   # Sol (G0 = MIDI 19)
+            'H': '16'    # Si Bemol (Bb0 = MIDI 22)
         }
 
         self.gm_instruments = {
