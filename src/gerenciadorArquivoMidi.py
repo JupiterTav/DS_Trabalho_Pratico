@@ -1,4 +1,5 @@
 import os
+from mido import Message, MidiTrack, MidiFile
 from interpretador import Interpretador
 from gerenciadorVozes import GerenciadorVozes
 
@@ -6,49 +7,75 @@ from gerenciadorVozes import GerenciadorVozes
 class GerenciadorArquivoMidi:
 
     def __init__(self):
-        self.midiFile = ""
+        self.midiFile = MidiFile(type=1, ticks_per_beat=480)
+        self.caminho = ""
 
     def criarArquivo(self, caminho, vozes: GerenciadorVozes()):
-        if os.path.exists(caminho):
-            print("{} já existe. Deletando...", caminho)
-            os.remove("caminho")
-
+        self.caminho = caminho
         os.makedirs(os.path.dirname(caminho), exist_ok=True)
-        if (".midi" or ".mid") in caminho:
-            self.midiFile = open(caminho, "w")
-        else:
-            self.midiFile = open(caminho + ".mid", "w")
 
-        self.__escreveHeaderChunk__(vozes)
+        if (".midi" or ".mid") not in caminho:
+            self.caminho = caminho+'.mid'
+
+            self.midiFile.save(caminho)
+
         self.__escreveTrackChunk__(vozes)
 
-    def __escreveHeaderChunk__(self, vozes: GerenciadorVozes()):
-        with open(self.midiFile.name, 'a'):
-            header_label = "4d 54 68 64"  # MThd
-            headerLength = vozes.len_vozes()
-            self.midiFile.write(
-                    f"{header_label} 00 00 00 06 00 02 00 0{headerLength} 00 60")
+    def __escreveTrackChunk__(self, vozes=GerenciadorVozes()):
 
-    def __escreveTrackChunk__(self, vozes= GerenciadorVozes(), _interpretador= Interpretador()):
-        track_label = "4d 54 72 6b"  # MTrk
-        midi_event = ""
-        end_track = "ff 2f 00"
-        with open(self.midiFile.name, 'a'):
-            for i,voz in enumerate(vozes.get_vozes()):
-                inicio = 0
-                if '[' and ']' in voz.voz_texto and voz.voz_texto[0] == '[':
-                    close_bracket_index = voz.voz_texto.index(']')
-                    inicio = close_bracket_index + 1 
-                    voz.set_atraso(int(voz.voz_texto[1:close_bracket_index]))
-                for j in range(inicio, len(voz.voz_texto)):
-                    if voz.voz_texto[j] in _interpretador.notas_midi:
-                        midi_event += f" 9{i} {voz.get_volume():x} {_interpretador.notas_midi[voz.voz_texto[j]]} 81 00 8{i} 00 {_interpretador.notas_midi[voz.voz_texto[j]]} "
-                self.midiFile.write(f" {track_label} 00 00 00 8c {voz.get_atraso():x} {midi_event} {end_track}")
-            self.midiFile.close()
+        _interpretador = Interpretador()
 
-    def __escreveEvent__(self, inicio, voz_texto="", _interpretador=Interpretador()):
-        for i in range(inicio, len(voz_texto)):
-            if voz_texto[i] in _interpretador.notas_midi:
-                self.midiFile.write(" 00")
+        for i, voz in enumerate(vozes.get_vozes()):
+            track = MidiTrack()
+            self.midiFile.tracks.append(track)
+            track.name = f'voz {i}'
+            track.append(Message('control_change', channel=i, control=7, value=voz.get_volume()))
+            """
+                DELAY - NOTE_ON - NOTE_OFF
+            """
+            inicio = 0
+            if '[' and ']' in voz.voz_texto and voz.voz_texto[0] == '[':
+                close_bracket_index = voz.voz_texto.index(']')
+                inicio = close_bracket_index + 1
+                voz.set_atraso(int(voz.voz_texto[1:close_bracket_index]))
+            for j in range(inicio, len(voz.voz_texto)):
+                if voz.voz_texto[j] in _interpretador.notas_midi:
+                    track.append(Message('note_on', channel=i, note=_interpretador.notas_midi[voz.voz_texto[j]]+(12*voz.get_oitava()), 
+                                            velocity=100, time=voz.get_atraso()*self.midiFile.ticks_per_beat))
+                    track.append(Message('note_off', channel=i,note=_interpretador.notas_midi[voz.voz_texto[j]]+(12*voz.get_oitava()), 
+                                            velocity=100,time=480))
 
+                elif voz.voz_texto[j] in _interpretador.gm_intruments_comando:
+                    voz.set_instrumento(_interpretador.gm_intruments_comando[voz.voz_texto[j]])
+                    track.append(Message('program_change', channel=i, program=voz.get_instrumento(), time=0))
 
+                elif voz.voz_texto[j].isnumeric():
+                    if (int(voz.voz_texto[j]) % 2) == 0:
+                        voz.set_instrumento(voz.get_instrumento() + 1)
+                        track.append(Message('program_change', channel=i, program=voz.get_instrumento(), time=0))
+                    else:
+                        voz.set_instrumento(14)
+                        track.append(Message('program_change', channel=i, program=voz.get_instrumento(), time=0))
+                elif voz.voz_texto[j] in '?.':
+                    voz.set_oitava(voz.get_oitava()+1)
+
+                elif voz.voz_texto[j] == 'V':
+                    voz.set_oitava(voz.get_oitava()-1)
+
+                elif voz.voz_texto[j] in 'abcdefgh':
+                    track.append(Message('note_off', channel=i, time=480))
+                elif voz.voz_texto[j] == ' ':
+                    voz.dobra_volume()
+                elif voz.voz_texto[j] == '>':
+                    vozes.bpm_global = vozes.bpm_global+10
+                elif voz.voz_texto[j] == '<':
+                    vozes.bpm_global = vozes.bpm_global-10
+                else:
+                    if voz.voz_texto[j-1] in _interpretador.notas_midi:
+                        tracks.append(Message('note_on', channel=i, note=_interpretador.notas_midi[voz.voz_texto[j]]+(12*voz.get_oitava()),
+                                                velocity=100, time=voz.get_atraso()*self.midiFile.ticks_per_beat))
+                        track.append(Message('note_off', channel=i,note=_interpretador.notas_midi[voz.voz_texto[j]]+(12*voz.get_oitava()),
+                                                velocity=100, time=480))
+                    else:
+                        track.append(Message('note_off', channel=i, time=480))
+            self.midiFile.save(self.caminho)
