@@ -17,7 +17,7 @@ class GerenciadorVozes:
                 i = 0
             print(f"linha {i}")
 
-            voz = Voz(linha, self.bpm_global, volumes_base[i], oitavas_base[i])
+            voz = Voz(linha, volumes_base[i], oitavas_base[i])
             self.vozes.append(voz)
             i += 1
     def get_vozes(self):

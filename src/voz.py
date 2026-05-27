@@ -1,19 +1,15 @@
 class Voz:
-    def __init__(self, texto, bpm, volume, oitava):
+    def __init__(self, texto, volume, oitava):
         self.voz_texto = texto
-        self.__bpm = bpm
+
         self.__volume = volume
         self.__oitava = oitava
-        self.__oitavadefault = oitava
+        self.__oitava_voz = oitava
+
         self.__atraso = 00
         self.nota = 00
         self.instrumento = 00
 
-    def get_bpm(self):
-        return self.__bpm
-
-    def set_bpm(self, novoBpm):
-        self.bpm = novoBpm
 
     def get_volume(self):
         return self.__volume
@@ -22,10 +18,10 @@ class Voz:
         self.volume = novoVolume
 
     def dobra_volume(self):
-        if(self.volume*2 > 127):
-            self.volume = 127
+        if(self.__volume*2 > 127):
+            self.__volume = 127
         else: 
-            self.volume = self.volume*2
+            self.__volume = self.__volume*2
 
     def get_oitava(self):
         return self.__oitava
@@ -34,7 +30,7 @@ class Voz:
         if novaOitava <= 9 and novaOitava >= 0:
             self.oitava = novaOitava
         else:
-            self.oitava = self.__oitavadefault
+            self.oitava = self.__oitava_voz
 
     def set_nota(self, nota):
         self.nota = nota
