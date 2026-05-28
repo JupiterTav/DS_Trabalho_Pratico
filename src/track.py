@@ -3,9 +3,9 @@
 
 
 class Track:
-    VOLUME_MAXIMO = 127
+    __VOLUME_MAXIMO = 127
 
-    def __init__(self, *, texto_track: str, volume: int, oitava: int):
+    def __init__(self, texto_track: str, volume: int, oitava: int):
         self.__texto_track = texto_track
         self.__volume = volume
         self.__oitava = oitava
@@ -25,8 +25,8 @@ class Track:
 
     @volume.setter()
     def volume(self, value):
-        if value > self.VOLUME_MAXIMO:
-            self.__volume = self.VOLUME_MAXIMO
+        if value > self.__VOLUME_MAXIMO:
+            self.__volume = self.__VOLUME_MAXIMO
         else:
             self.__volume = value
 
