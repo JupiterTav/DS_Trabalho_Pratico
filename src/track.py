@@ -23,10 +23,12 @@ class Track:
     def volume(self):
         return self.__volume
 
-    @volume.setter()
+    @volume.setter
     def volume(self, value):
         if value > self.__VOLUME_MAXIMO:
             self.__volume = self.__VOLUME_MAXIMO
+        elif value < 0:
+            self.__volume = 0
         else:
             self.__volume = value
 
