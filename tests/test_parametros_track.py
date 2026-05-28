@@ -39,3 +39,4 @@ def testa_oitava_menor_que_0_deve_permanecer_na_oitava_original(track_instancia)
     track_instancia.oitava = -2
 
     assert track_instancia.oitava == oitava_original
+

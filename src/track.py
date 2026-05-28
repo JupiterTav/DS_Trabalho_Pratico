@@ -47,4 +47,11 @@ class Track:
     def delay(self):
         return self.__delay
 
+    @delay.setter
+    def delay(self, value):
+        if value >= 0:
+            self.__delay = value
+        else:
+            raise Exception("delay não deve ser negativo")
+
 
