@@ -1,6 +1,6 @@
-# TODO: configurar os parametros de uma track
-# TODO: Construir metodos relacionados a track (mido)
-
+# TODO: configurar os parametros de uma track [X]
+# WARN: Mover esses métodos relacionados para  uma classe de eventos midi
+    # TODO: Construir metodos relacionados a track (mido)
 
 class Track:
     __VOLUME_MAXIMO = 127
@@ -11,9 +11,12 @@ class Track:
         self.__oitava = oitava
 
         self.__oitava_padrao = oitava
-        self.__nota_atual = 0
-        self.__instrumento_atual = 0
+        self.__instrumento = 0
         self.__delay = 0
+        self.__nota = 0
+
+        self.nota_atual = 0
+#  NOTE: Interessante encapsular numa classe parametros(track.parametro.nome_parametro)
 
     @property
     def texto_track(self):
@@ -54,4 +57,22 @@ class Track:
         else:
             raise Exception("delay não deve ser negativo")
 
+    @property
+    def instrumento(self):
+        return self.__instrumento
+
+    @instrumento.setter
+    def instrumento(self, value):
+        if value >= 1 and value <= 128:
+            self.__instrumento = value
+        else:
+            raise Exception(f"não há intrumento general midi {value}")
+    @property
+    def nota(self):
+        return self.__nota
+
+    @nota.setter
+    def nota(self, value):
+        self.__nota = value
+        self.nota_atual = value + (12 * self.oitava)
 
