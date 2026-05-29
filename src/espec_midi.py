@@ -4,7 +4,7 @@
 
 class EspecMidi:
     def __init__(self):
-        self.__notas_midi = {
+        self._notas_midi = {
             'A': 21,   # La (A0 = MIDI 21)
             'B': 23,   # Si (B0 = MIDI 23)
             'C': 12,   # Do (C0 = MIDI 12)
@@ -16,7 +16,7 @@ class EspecMidi:
             'M': 27
         }
 
-        self.__gm_intruments = {
+        self._gm_intruments = {
                 '!': 21,
                 'O': 109,
                 'o': 109,
