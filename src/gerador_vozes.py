@@ -2,7 +2,7 @@ from track import Track as Voz
 from campo_texto import CampoTexto
 
 
-class GerenciadorVozes:
+class GeradorVozes:
     def __init__(self):
         self.bpm_global = 120
 

@@ -8,7 +8,7 @@ class GerenciadorMidi(EspecMidi):
     __TICKS_PER_BEAT = 480
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
 
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
         self.__caminho = ""

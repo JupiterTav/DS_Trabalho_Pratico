@@ -46,6 +46,10 @@ class Track:
         else:
             self.__oitava = self.__oitava_padrao
 
+    @property
+    def delay(self):
+        return self.__delay
+
     @delay.setter
     def delay(self, value):
         if value >= 0:
@@ -57,7 +61,7 @@ class Track:
          if '[' and ']' in self.texto_track and self.texto_track[0] == '[':
                 return True 
 
-           @property
+    @property
     def instrumento(self):
         return self.__instrumento
 
