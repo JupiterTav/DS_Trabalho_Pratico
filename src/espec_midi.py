@@ -3,9 +3,10 @@
 
 from abc import ABC
 
+
 class EspecMidi(ABC):
     def __init__(self):
-        self._notas_midi = {
+        self.notas_midi = {
             'A': 21,   # La (A0 = MIDI 21)
             'B': 23,   # Si (B0 = MIDI 23)
             'C': 12,   # Do (C0 = MIDI 12)
@@ -17,7 +18,7 @@ class EspecMidi(ABC):
             'M': 27
         }
 
-        self._gm_intruments = {
+        self.gm_intruments = {
                 '!': 21,
                 'O': 109,
                 'o': 109,

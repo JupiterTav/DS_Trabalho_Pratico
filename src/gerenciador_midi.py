@@ -30,14 +30,14 @@ class GerenciadorMidi(EspecMidi):
             print("Permissão negada para criação do arquivo")
         return 0
 
+    def criaTrack(self, *, track_name: str):
+        track = MidiTrack()
+        self.__arq_midi.tracks.append(track)
+        track.name = track_name
 
+        self.__arq_midi.save(self.__caminho)
 
-    def liga_nota(self,  *, channel: int, nota, time) -> Message:
-        return Message('note_on', channel=channel, note=self._notas_midi[nota], velocity=100, time=time * self.__TICKS_PER_BEAT)
+        return track
 
-    def desliga_nota(self, *, channel: int, nota) -> Message:
-        return Message('note_off', channel=channel, note=self._notas_midi[nota], velocity=100, time=self.__TICKS_PER_BEAT)
-
-    def troca_instrumento(self, channel: int, instrumento) -> Message:
-        return Message('program_change', channel=channel, program=self._gm_intruments[instrumento])
-
+    def salvaArquivo(self):
+        self.__arq_midi.save(self.__caminho)
