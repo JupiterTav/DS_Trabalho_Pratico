@@ -1,8 +1,9 @@
 # TODO: Serve como o intepretador (branch prototipo). Deve ser a classe pai do
 # TODO: Gerenciador Midi e eventos midi.
 
+from abc import ABC
 
-class EspecMidi:
+class EspecMidi(ABC):
     def __init__(self):
         self._notas_midi = {
             'A': 21,   # La (A0 = MIDI 21)

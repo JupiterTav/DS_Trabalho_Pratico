@@ -6,10 +6,15 @@
 
 from campo_texto import CampoTexto
 from gerenciador_vozes import GerenciadorVozes
+from gerenciador_midi import GerenciadorMidi
 
 
 texto = CampoTexto()
 texto.le_texto()
 
 gerenciador_de_vozes = GerenciadorVozes()
-gerenciador_de_vozes.gerar(texto)
+vozes = gerenciador_de_vozes.gerar_vozes(texto)
+
+gerenciador_arq = GerenciadorMidi()
+
+gerenciador_arq.gerarArquivo("build/musica")
