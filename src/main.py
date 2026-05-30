@@ -19,8 +19,9 @@ def main():
     gerenciador_arq = GerenciadorMidi()
     gerenciador_arq.gerarArquivo("build/musica")
 
-    for i,voz in enumerate(vozes): 
-        track = gerenciador_arq.criaTrack(f'voz {i}')
+    for i, voz in enumerate(vozes):
+        track = gerenciador_arq.criaTrack(track_name=f'voz {i}')
+
 
 if __name__ == "__main__":
     main()

@@ -12,11 +12,21 @@ class GeradorVozes:
     def gerar_vozes(self, texto: CampoTexto()) -> list[Voz]:
         vozes = []
         i = 0
+
         for linha in texto.linhas:
+            voz = None
             if i % 4 == 0:
                 i = 0
-            voz = Voz(linha, self.__volumes_padrao[i], self.__oitavas_padrao[i])
+            if '[' and ']' in linha and linha[0] == '[':
+                close_bracket_index = linha.index(']')
+                linha_correta = linha[close_bracket_index+1:] 
+                voz = Voz(linha_correta, self.__volumes_padrao[i], self.__oitavas_padrao[i])
+                voz.delay = (int(linha[1:close_bracket_index]))
+            else:
+                voz = Voz(linha, self.__volumes_padrao[i], self.__oitavas_padrao[i])
+
             vozes.append(voz)
             i += 1
+
         return vozes
 
