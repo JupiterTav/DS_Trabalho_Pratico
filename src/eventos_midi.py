@@ -10,8 +10,8 @@ class EventosMidi(EspecMidi):
     def interpretaEventoMidi(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self._notas_midi:
             voz.nota = self._notas_midi[char]
-            track.append(self.liga_nota(channel=channel, nota=voz.nota_atual, time=voz.delay))
-            track.append(self.desliga_nota(voz.nota_atual,channel=channel))
+            track.append(self.__liga_nota(channel=channel, nota=voz.nota_atual, time=voz.delay))
+            track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
 
         elif char in self._gm_intruments:
             voz.instrumento = self._gm_intruments[char]
@@ -23,19 +23,16 @@ class EventosMidi(EspecMidi):
                 track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
             else:
                 voz.instrumento = 14
-                track.appen(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
+                track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
 
-        elif char in 'abcdefgh':
-            track.append(self.desliga_nota(channel=channel, nota=voz.nota_atual))
+        else:
+            track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
 
-    def liga_nota(self, *, channel: int, nota: str, time: int) -> Message:
+    def __liga_nota(self, *, channel: int, nota: str, time: int) -> Message:
         return Message('note_on', channel=channel, note=nota, velocity=100, time=time * self.__TICKS_PER_BEAT)
 
-    def desliga_nota(self, nota, *, channel: int) -> Message:
-        return Message('note_off', channel=channel, note=nota, velocity=100, time=self.__TICKS_PER_BEAT)
-
-    def silencia(self, *, channel) -> Message:
-        return Message('note_off', channel=channel, time=self.__TICKS_PER_BEAT)
+    def __desliga_nota(self, *, channel: int, nota: int) -> Message:
+        return Message('note_off', channel=channel, note=nota, velocity=0, time=self.__TICKS_PER_BEAT)
 
     def troca_instrumento(self, *, channel: int, instrumento) -> Message:
         return Message('program_change', channel=channel, program=instrumento)
