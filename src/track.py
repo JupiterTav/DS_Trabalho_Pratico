@@ -11,9 +11,7 @@ class Track:
         self.__delay = 0
         self.__nota = 0
 
-        self.nota_atual = 0
-
-        self.track_event = ['?', '.', 'V']
+        self.nota_atual: int = 0
 
     @property
     def texto_track(self):
@@ -24,7 +22,7 @@ class Track:
         return self.__volume
 
     @volume.setter
-    def volume(self, value):
+    def volume(self, value: int):
         if value > self.__VOLUME_MAXIMO:
             self.__volume = self.__VOLUME_MAXIMO
         elif value < 0:
@@ -37,7 +35,7 @@ class Track:
         return self.__oitava
 
     @oitava.setter
-    def oitava(self, value):
+    def oitava(self, value: int):
         if value <= 9 and value >= 0:
             self.__oitava = value
         else:
@@ -53,22 +51,23 @@ class Track:
             return self.__delay
 
     @delay.setter
-    def delay(self, value):
+    def delay(self, value: int):
         if value >= 0:
             self.__delay = value
         else:
             raise Exception("delay não deve ser negativo")
 
-    def eh_delayed(self) -> bool:
-         if '[' and ']' in self.texto_track and self.texto_track[0] == '[':
-                return True 
+    def eh_atrasado(self) -> bool:
+        if '[' and ']' in self.texto_track and self.texto_track[0] == '[':
+            return True 
+        return False 
 
     @property
     def instrumento(self):
         return self.__instrumento
 
     @instrumento.setter
-    def instrumento(self, value):
+    def instrumento(self, value: int ):
         if value >= 1 and value <= 128:
             self.__instrumento = value
         else:
@@ -78,7 +77,6 @@ class Track:
         return self.__nota
 
     @nota.setter
-    def nota(self, value):
+    def nota(self, value: int):
         self.__nota = value
         self.nota_atual = value + (12 * self.oitava)
-

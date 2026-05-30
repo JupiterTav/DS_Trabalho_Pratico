@@ -1,19 +1,18 @@
-from track import Track as Voz
-from campo_texto import CampoTexto
+from .track import Track as Voz
 
 
 class GeradorVozes:
     def __init__(self):
-        self.bpm_global = 120
+        self.bpm_global: int = 120
 
         self.__oitavas_padrao = [6, 5, 4, 3]
         self.__volumes_padrao = [100, 80, 60, 40]
 
-    def gerar_vozes(self, texto: CampoTexto()) -> list[Voz]:
-        vozes = []
+    def gerar_vozes(self, texto: list[str]) -> list[Voz]:
+        vozes: list[Voz] = []
         i = 0
 
-        for linha in texto.linhas:
+        for linha in texto:
             voz = None
             if i % 4 == 0:
                 i = 0

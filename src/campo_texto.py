@@ -2,7 +2,7 @@
 
 class CampoTexto:
     def __init__(self):
-        self.linhas = []
+        self.linhas: list[str] = []
         print("Insira  o texto: ")
 
     def le_texto(self):
