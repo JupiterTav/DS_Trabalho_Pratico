@@ -15,11 +15,11 @@ def main():
     vozes = gerador_vozes.gerar_vozes(texto)
 
     gerenciador_arq = GerenciadorMidi()
-    gerenciador_arq.gerarArquivo("build/musica")
+    gerenciador_arq.criar_arquivo("build/musica")
 
-    gerenciador_arq.processaTracks(vozes, gerador_vozes)
+    gerenciador_arq.processar_arquivo(vozes, gerador_vozes)
 
-    gerenciador_arq.salvaArquivo()
+    gerenciador_arq.salvar_arquivo()
 
 if __name__ == "__main__":
     main()

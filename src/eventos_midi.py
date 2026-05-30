@@ -40,7 +40,7 @@ class EventosMidi(EspecMidi):
     def define_volume(self, *, channel: int,  volume: int):
         return Message('control_change', channel=channel, control=7, value=volume)
 
-    def define_tempo(self, *, bpm: int):
+    def define_bpm(self, *, bpm: int):
         return MetaMessage('set_tempo', tempo=bpm2tempo(bpm), time=0)
 
     def end_track(self):
