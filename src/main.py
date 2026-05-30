@@ -21,17 +21,23 @@ def main():
     for i, voz in enumerate(vozes):
         track = gerenciador_arq.criaTrack(track_name=f'voz {i}')
         track.append(evento_midi.define_volume(channel=i, volume=voz.volume))
-
+        track.append(evento_midi.define_tempo(bpm=gerador_vozes.bpm_global))
         for j, char in enumerate(voz.texto_track):
 
-            if char in evento_midi._notas_midi:
-                track.extend(evento_midi.interpretaEventoMidi(char, channel=i, voz=voz))
+            if char in evento_midi._notas_midi or evento_midi._gm_intruments or 'abcdefgh' or char.isnumeric():
+                evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
 
-            elif evento_midi._gm_intruments or 'abcdefgh':
-                track.append(evento_midi.interpretaEventoMidi(char, channel=i, voz=voz))
+            elif char in voz.track_event:
+                if char in '?.':
+                    voz.oitava += 1
+                elif char in 'V':
+                    voz.oitava -= 1
+            else:
+                if voz.texto_track[j-1] in evento_midi._notas_midi:
+                    track.extend(evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz))
+                else:
+                    track.append(evento_midi.silencia(channel=i))
 
-            elif char.isnumeric():
-                track.append(evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz))
 
     gerenciador_arq.salvaArquivo()
 

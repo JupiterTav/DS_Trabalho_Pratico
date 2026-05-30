@@ -12,7 +12,8 @@ class Track:
         self.__nota = 0
 
         self.nota_atual = 0
-#  NOTE: Interessante encapsular numa classe parametros(track.parametro.nome_parametro)
+
+        self.track_event = ['?', '.', 'V']
 
     @property
     def texto_track(self):
