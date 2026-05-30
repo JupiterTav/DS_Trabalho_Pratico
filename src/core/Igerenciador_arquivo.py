@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.gerador_vozes import GeradorVozes
-from src.track import Track
+from core.gerador_vozes import GeradorVozes
+from core.track import Track
 
 
 class IGerenciador_arquivo(ABC):

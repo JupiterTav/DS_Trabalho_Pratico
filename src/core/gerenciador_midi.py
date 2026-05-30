@@ -2,10 +2,10 @@ import os
 from typing import  override
 from mido import  MetaMessage, MidiTrack, MidiFile
 
-from .Igerenciador_arquivo import IGerenciador_arquivo
-from .track import Track
-from .eventos_midi import EventosMidi
-from .gerador_vozes import GeradorVozes
+from core.Igerenciador_arquivo import IGerenciador_arquivo
+from core.track import Track
+from core.eventos_midi import EventosMidi
+from core.gerador_vozes import GeradorVozes
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
