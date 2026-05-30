@@ -1,7 +1,3 @@
-# TODO: configurar os parametros de uma track [X]
-# WARN: Mover esses métodos relacionados para  uma classe de eventos midi
-    # TODO: Construir metodos relacionados a track (mido)
-
 class Track:
     __VOLUME_MAXIMO = 127
 
@@ -48,7 +44,12 @@ class Track:
 
     @property
     def delay(self):
-        return self.__delay
+        if self.__delay > 0:
+            delayed = self.__delay
+            self.__delay = 0
+            return delayed
+        else:
+            return self.__delay
 
     @delay.setter
     def delay(self, value):
