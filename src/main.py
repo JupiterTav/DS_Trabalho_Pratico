@@ -1,6 +1,6 @@
-from .campo_texto import CampoTexto
-from .gerador_vozes import GeradorVozes
-from .gerenciador_midi import GerenciadorMidi
+from core.campo_texto import CampoTexto
+from core.gerador_vozes import GeradorVozes
+from core.gerenciador_midi import GerenciadorMidi
 
 def main():
     texto = CampoTexto()

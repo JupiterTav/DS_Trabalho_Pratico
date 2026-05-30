@@ -1,6 +1,5 @@
 import pytest
-from src import track
-from src.track import Track
+from src.core.track import Track
 
 
 @pytest.fixture
