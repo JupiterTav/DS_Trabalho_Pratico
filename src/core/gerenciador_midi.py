@@ -21,10 +21,10 @@ class GerenciadorMidi(IGerenciador_arquivo):
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
 
-            if ".midi" or ".mid" not in caminho:
-                self.__caminho = caminho + ".mid"
-            else:
+            if caminho.__contains__(".midi") or caminho.__contains__(".mid"):
                 self.__caminho = caminho
+            else:
+                self.__caminho = caminho + ".mid"
 
             self.__arq_midi.save(self.__caminho)
 
@@ -78,3 +78,9 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def salvar_arquivo(self):
         self.__arq_midi.save(filename=self.__caminho)
+    
+    @property
+    def caminho(self) -> str:
+        if not os.path.exists(self.__caminho):
+            raise FileNotFoundError(f'{self.__caminho} não encontrado')
+        return self.__caminho
