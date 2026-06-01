@@ -14,7 +14,7 @@ class MixerState(Enum):
 #TODO: Ao trabalhar na GUI, mover (boa parte) dessa função e o enum acima para uma classe mixer
 def main():
     
-    conversor = Conversor("/home/tav_wes/Faculdade/DS_Trabalho_Pratico/assets/FluidR3_GM.sf2")
+    conversor = Conversor("/home/tav_wes/Faculdade/DS_Trabalho_Pratico/assets/TimGM6mb.sf2")
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()
