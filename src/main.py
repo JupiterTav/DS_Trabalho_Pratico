@@ -11,12 +11,18 @@ from core.conversor import Conversor
 class MixerState(Enum):
     EDITING = 0
     GENERATING = 1
-    SYNTHETIZING = 3
+    SYNTHESIZING = 3
     PLAYING = 4
     QUIT = 5
 
+#NOTE: Mixer deve ser o modulo que faz a comunicação entre core e ui.
+#NOTE: Main deve majoritamente inicialiar UI e Mixer e suas comunicacoes 
+
 #TODO: Ao trabalhar na GUI, mover (boa parte) dessa função e o enum acima para uma classe mixer
+        #TODO: Classe mixer e sua função para inicializar 
+
 def main():
+    
     
     conversor = Conversor("assets/TimGM6mb.sf2")
     janela = JanelaPrincipal()
@@ -37,9 +43,9 @@ def main():
         _ = arquivo_midi.criar_arquivo("build/saida.mid")
         arquivo_midi.processar_arquivo(vozes, gerador_vozes)
         arquivo_midi.salvar_arquivo()
-        estado = MixerState.SYNTHETIZING
+        estado = MixerState.SYNTHESIZING
 
-    if estado == MixerState.SYNTHETIZING:
+    if estado == MixerState.SYNTHESIZING:
         _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, 
                                            output_path="build/.wav", volume=100)
         if _ == True:

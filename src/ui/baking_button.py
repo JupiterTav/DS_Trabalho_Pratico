@@ -3,7 +3,7 @@ from tkinter import filedialog
 
 
 class BakeBotao(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, mixer):
         super().__init__(master)
 
         self.grid_columnconfigure(0, weight=1)
