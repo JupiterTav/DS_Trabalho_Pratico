@@ -1,11 +1,15 @@
 # DS_Trabalho_Pratico
 
 ### Dependencies
-    mido:
+- mido:
+    
         pip install mido
-    pygame:
+
+- pygame:
+        
         pip install pygame 
     
-    fluidsynth:
+- fluidsynth:
     - arch: 
-             sudo pacman -S fluidsynth 
+             
+             sudo pacman -S fluidsynth soundfont-fluid

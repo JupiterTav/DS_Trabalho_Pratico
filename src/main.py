@@ -5,20 +5,25 @@ from core.gerador_vozes import GeradorVozes
 from core.gerenciador_midi import GerenciadorMidi
 from core.conversor import Conversor
 
+import pygame.mixer
+
 class MixerState(Enum):
     EDITING = 0
     GENERATING = 1
     SYNTHETIZING = 3
-    QUIT = 4
+    PLAYING = 4
+    QUIT = 5
 
 #TODO: Ao trabalhar na GUI, mover (boa parte) dessa função e o enum acima para uma classe mixer
 def main():
     
+    pygame.init()
+    pygame.mixer.init()
     conversor = Conversor("assets/TimGM6mb.sf2")
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()
-
+    output_arquivo_convertido = "build/musica.mp3"
     estado = MixerState.EDITING
     
     if estado == MixerState.EDITING:
@@ -36,9 +41,14 @@ def main():
         estado = MixerState.SYNTHETIZING
 
     if estado == MixerState.SYNTHETIZING:
-        _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, output_path="build/main_test.wav", volume=100)
+        _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, output_path=output_arquivo_convertido, volume=100)
         if _ == True:
-            estado = MixerState.QUIT
+            estado = MixerState.PLAYING
+    if estado == MixerState.PLAYING:
+        pygame.mixer.music.load(output_arquivo_convertido)
+        pygame.mixer.music.play(-1)
+        estado = MixerState.QUIT
+
         
 if __name__ == "__main__":
     main()
