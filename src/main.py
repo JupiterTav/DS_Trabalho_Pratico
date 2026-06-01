@@ -23,7 +23,6 @@ def main():
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()
-    output_arquivo_convertido = "build/musica.mp3"
     estado = MixerState.EDITING
     
     if estado == MixerState.EDITING:
@@ -35,13 +34,14 @@ def main():
         vozes = gerador_vozes.gerar_vozes(texto.Linhas)
         
         
-        _ = arquivo_midi.criar_arquivo("build/musica.mid")
+        _ = arquivo_midi.criar_arquivo("build/saida.mid")
         arquivo_midi.processar_arquivo(vozes, gerador_vozes)
         arquivo_midi.salvar_arquivo()
         estado = MixerState.SYNTHETIZING
 
     if estado == MixerState.SYNTHETIZING:
-        _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, output_path=output_arquivo_convertido, volume=100)
+        _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, 
+                                           output_path=janela.cabecalho.nome_arquivo.get(), volume=100)
         if _ == True:
             estado = MixerState.PLAYING
     if estado == MixerState.PLAYING:

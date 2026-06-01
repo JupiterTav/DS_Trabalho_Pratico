@@ -1,6 +1,6 @@
-
-from  .cabecalho import Cabecalho
 import customtkinter as ctk
+
+from .cabecalho import Cabecalho
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -34,8 +34,6 @@ class JanelaPrincipal(ctk.CTk):
         self.row_reproduçao.grid(row=4, column=0, sticky="nsew")
 
     
-
-
 
 janela = JanelaPrincipal()
 janela.mainloop()
