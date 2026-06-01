@@ -41,7 +41,7 @@ def main():
 
     if estado == MixerState.SYNTHETIZING:
         _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, 
-                                           output_path=janela.cabecalho.nome_arquivo.get(), volume=100)
+                                           output_path="build/.wav", volume=100)
         if _ == True:
             estado = MixerState.PLAYING
     if estado == MixerState.PLAYING:
