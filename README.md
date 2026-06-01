@@ -8,6 +8,9 @@
 - pygame:
         
         pip install pygame 
+- custom tkinter
+
+        pip install customtkinter
     
 - fluidsynth:
     - arch: 
