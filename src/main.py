@@ -1,11 +1,12 @@
 from enum import Enum
 
 from ui.campo_texto import CampoTexto
+from ui.janela_principal import JanelaPrincipal
+
 from core.gerador_vozes import GeradorVozes
 from core.gerenciador_midi import GerenciadorMidi
 from core.conversor import Conversor
 
-import pygame.mixer
 
 class MixerState(Enum):
     EDITING = 0
@@ -17,9 +18,8 @@ class MixerState(Enum):
 #TODO: Ao trabalhar na GUI, mover (boa parte) dessa função e o enum acima para uma classe mixer
 def main():
     
-    pygame.init()
-    pygame.mixer.init()
     conversor = Conversor("assets/TimGM6mb.sf2")
+    janela = JanelaPrincipal()
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()
@@ -45,10 +45,8 @@ def main():
         if _ == True:
             estado = MixerState.PLAYING
     if estado == MixerState.PLAYING:
-        pygame.mixer.music.load(output_arquivo_convertido)
-        pygame.mixer.music.play(-1)
         estado = MixerState.QUIT
 
-        
+    janela.mainloop()
 if __name__ == "__main__":
     main()
