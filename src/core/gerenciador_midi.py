@@ -21,7 +21,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
 
-            if caminho.__contains__(".midi") or caminho.__contains__(".mid"):
+            if ".midi" in caminho or ".mid" in caminho:
                 self.__caminho = caminho
             else:
                 self.__caminho = caminho + ".mid"
@@ -65,6 +65,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz, track=track)
                     else:
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+
 
     def criaTrack(self, *, track_name: str) -> MidiTrack:
         track = MidiTrack()

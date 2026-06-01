@@ -14,7 +14,7 @@ class MixerState(Enum):
 #TODO: Ao trabalhar na GUI, mover (boa parte) dessa função e o enum acima para uma classe mixer
 def main():
     
-    conversor = Conversor("/home/tav_wes/Faculdade/DS_Trabalho_Pratico/assets/TimGM6mb.sf2")
+    conversor = Conversor("assets/TimGM6mb.sf2")
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()
@@ -30,7 +30,7 @@ def main():
         vozes = gerador_vozes.gerar_vozes(texto.Linhas)
         
         
-        _ = arquivo_midi.criar_arquivo("/home/tav_wes/Faculdade/DS_Trabalho_Pratico/build/musica.mid")
+        _ = arquivo_midi.criar_arquivo("build/musica.mid")
         arquivo_midi.processar_arquivo(vozes, gerador_vozes)
         arquivo_midi.salvar_arquivo()
         estado = MixerState.SYNTHETIZING
