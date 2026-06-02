@@ -2,14 +2,14 @@ class Track:
     __VOLUME_MAXIMO = 127
 
     def __init__(self, texto_track: str, volume: int, oitava: int):
-        self.__texto_track = texto_track
-        self.__volume = volume
-        self.__oitava = oitava
+        self._texto_track = texto_track
+        self._volume = volume
+        self._oitava = oitava
 
-        self.__oitava_padrao = oitava
-        self.__instrumento = 0
-        self.__delay = 0
-        self.__nota = 0
+        self._oitava_padrao = oitava
+        self._instrumento = 0
+        self._delay = 0
+        self._nota = 0
 
         self.nota_atual: int = 0
 
