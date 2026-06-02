@@ -3,6 +3,7 @@ import customtkinter as ctk
 from mixer import Mixer
 
 from .cabecalho import Cabecalho
+from .scrollable_campo_texto import ScrollableCampoTexto
 from .mixing_button import MixBotao
 
 ctk.set_appearance_mode("dark")
@@ -28,8 +29,11 @@ class JanelaPrincipal(ctk.CTk):
         self.mix_botao.grid(row=1, column=0, sticky="nsew")
         #self.row_icons_superiores.grid(row=1, column=0, sticky="nsew")
 
-        self.row_principal = ctk.CTkScrollableFrame(self, width=self._current_width, height=400)
-        self.row_principal.grid(row=2, column=0, sticky="nsew")
+        self.campo_principal = ScrollableCampoTexto(self, 3)
+        self.campo_principal.grid(row=2, column=0, sticky="nsew")
+
+#        self.row_principal = ctk.CTkScrollableFrame(self, width=self._current_width, height=400)
+#        self.row_principal.grid(row=2, column=0, sticky="nsew")
 
         self.row_icons_inferiores = ctk.CTkFrame(self, width=self._current_width, height=20)
         self.row_icons_inferiores.grid(row=3, column=0, sticky="nsew")
