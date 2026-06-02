@@ -29,7 +29,7 @@ class JanelaPrincipal(ctk.CTk):
         self.mix_botao.grid(row=1, column=0, sticky="nsew")
         #self.row_icons_superiores.grid(row=1, column=0, sticky="nsew")
 
-        self.campo_principal = ScrollableCampoTexto(self, 3)
+        self.campo_principal = ScrollableCampoTexto(self, 1)
         self.campo_principal.grid(row=2, column=0, sticky="nsew")
 
 #        self.row_principal = ctk.CTkScrollableFrame(self, width=self._current_width, height=400)
