@@ -1,5 +1,6 @@
 from enum import Enum
 
+from mixer import Mixer
 from ui.campo_texto import CampoTexto
 from ui.janela_principal import JanelaPrincipal
 
@@ -23,9 +24,10 @@ class MixerState(Enum):
 
 def main():
     
+    mixer = Mixer()
     
     conversor = Conversor("assets/TimGM6mb.sf2")
-    janela = JanelaPrincipal()
+    janela = JanelaPrincipal(mixer=mixer)
 
     texto = CampoTexto()
     arquivo_midi = GerenciadorMidi()

@@ -1,14 +1,16 @@
 import customtkinter as ctk
 
+from mixer import Mixer
+
 from .cabecalho import Cabecalho
-from .baking_button import BakeBotao
+from .baking_button import MixBotao
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 
 class JanelaPrincipal(ctk.CTk):
 
-    def __init__(self):
+    def __init__(self, mixer: Mixer):
         super().__init__()
         
         self.title("Sintetizador de texto")
@@ -22,8 +24,8 @@ class JanelaPrincipal(ctk.CTk):
         self.cabecalho.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 
-        self.bake_botao = BakeBotao(self)
-        self.bake_botao.grid(row=1, column=0, sticky="nsew")
+        self.mix_botao = MixBotao(self, mixer=mixer)
+        self.mix_botao.grid(row=1, column=0, sticky="nsew")
         #self.row_icons_superiores.grid(row=1, column=0, sticky="nsew")
 
         self.row_principal = ctk.CTkScrollableFrame(self, width=self._current_width, height=400)
