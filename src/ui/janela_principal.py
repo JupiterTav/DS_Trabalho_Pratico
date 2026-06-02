@@ -3,7 +3,7 @@ import customtkinter as ctk
 from mixer import Mixer
 
 from .cabecalho import Cabecalho
-from .baking_button import MixBotao
+from .mixing_button import MixBotao
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")

@@ -35,17 +35,14 @@ def main():
     
     if estado == MixerState.EDITING:
         texto.le_texto()
-        estado = MixerState.GENERATING
-
-    if estado == MixerState.GENERATING:
-        gerador_vozes = GeradorVozes()
-        vozes = gerador_vozes.gerar_vozes(texto.Linhas)
+        #gerador_vozes = GeradorVozes()
+        #vozes = gerador_vozes.gerar_vozes(texto.Linhas)
         
         
-        _ = arquivo_midi.criar_arquivo("build/saida.mid")
-        arquivo_midi.processar_arquivo(vozes, gerador_vozes)
-        arquivo_midi.salvar_arquivo()
-        estado = MixerState.SYNTHESIZING
+       # _ = arquivo_midi.criar_arquivo("build/saida.mid")
+       # arquivo_midi.processar_arquivo(vozes, gerador_vozes)
+       # arquivo_midi.salvar_arquivo()
+       # estado = MixerState.SYNTHESIZING
 
     if estado == MixerState.SYNTHESIZING:
         _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, 

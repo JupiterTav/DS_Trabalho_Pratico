@@ -12,7 +12,7 @@ class MixBotao(ctk.CTkFrame):
 
         self.grid_columnconfigure(0, weight=1)
 
-        self.button = ctk.CTkButton(self, width=50, height=50, corner_radius=10, text="▶︎", font=("Helvetica", 40, "bold"), fg_color="transparent")
+        self.button = ctk.CTkButton(self, width=50, height=50, corner_radius=10, text="▶︎", font=("Helvetica", 40, "bold"), fg_color="transparent", command=lambda:self.get_arquivo_do_usuario(mixer=mixer))
         self.button.grid(row=0, column=0, sticky="ne", padx=20, pady=10)
 
     def get_arquivo_do_usuario(self, mixer: Mixer):
