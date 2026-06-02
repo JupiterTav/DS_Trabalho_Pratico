@@ -10,16 +10,26 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.value = 0 
 
         self.campos = []
-
+        
+        self.__ciclo_valores_iniciais: int = 0
+        self.__oitavas_padrao = ["6", "5", "4", "3"]
+        self.__volumes_padrao = ["100", "80", "60", "40"]
+        self.__instrumentos_padrao = ["6", "20", "0", "70"]
         self.adiciona_campo()
 
 
     def adiciona_campo(self) -> CampoEditavel: 
         self.value += 1
-
-        camp_edit = CampoEditavel(self) 
+        if self.__ciclo_valores_iniciais % 4 == 0:
+            self.__ciclo_valores_iniciais = 0 
+            
+        camp_edit = CampoEditavel(self, 
+                                  oitava_inicial=self.__oitavas_padrao[self.__ciclo_valores_iniciais], 
+                                  volume_inicial=self.__volumes_padrao[self.__ciclo_valores_iniciais], 
+                                  instrumento_inicial=self.__instrumentos_padrao[self.__ciclo_valores_iniciais]) 
         camp_edit.grid(row=self.value, column=0, ipady=15)
         
+        self.__ciclo_valores_iniciais += 1
         self.campos.append(camp_edit)
         
         print(f"[SCROLLABLE CAMPO TEXTO] {self.value} | campos: {len(self.campos)}")
