@@ -6,8 +6,8 @@ class Cabecalho(ctk.CTkFrame):
         
         self.grid_columnconfigure((0), weight=1)
 
-        self.nome_arquivo = ctk.CTkButton(self, width=30, height=30, text="↑", corner_radius=50)
-        self.nome_arquivo.grid(row=0, column=0, sticky="w", padx=(0, 10))
+        self.upload_txt = ctk.CTkButton(self, width=30, height=30, text="↑", corner_radius=50)
+        self.upload_txt.grid(row=0, column=0, sticky="w", padx=(0, 10))
         
         self.download_button = ctk.CTkButton(self, width=30, height=30 ,text="↓", corner_radius=50)
         self.download_button.grid(row=0, column=1, padx=(10, 0), sticky="e")
