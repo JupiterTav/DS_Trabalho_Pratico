@@ -8,9 +8,10 @@ ctk.set_default_color_theme("green")
 
 class JanelaPrincipal(ctk.CTk):
 
-    def __init__(self):
+    def __init__(self, mixer):
         super().__init__()
         
+        self.mixer = mixer
         self.title("Sintetizador de texto")
         self.geometry("640x400")
         
@@ -22,7 +23,7 @@ class JanelaPrincipal(ctk.CTk):
         self.cabecalho.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 
-        self.bake_botao = BakeBotao(self)
+        self.bake_botao = BakeBotao(self, mixer)
         self.bake_botao.grid(row=1, column=0, sticky="nsew")
         #self.row_icons_superiores.grid(row=1, column=0, sticky="nsew")
 

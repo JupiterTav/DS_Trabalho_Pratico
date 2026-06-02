@@ -1,6 +1,33 @@
 # DS_Trabalho_Pratico
 
-### Dependencies
+
+
+## Criando uma venv:
+| python -m venv .venv
+
+## Entrando na venv:
+#### Windows:
+|       No mesmo diretório onde foi criada a venv, digite: 
+
+        .venv\Scripts\activate
+
+#### Linux:
+|       No mesmo diretório onde foi criada a venv, digite: 
+
+        .venv\bin\activate
+
+
+
+## Instalando as dependências:
+        | pip install -r requirements.txt
+
+Pronto, para rodar apenas digite 
+
+       python src/main.py 
+                
+
+
+<!-- ### Dependencies
 - mido:
     
         pip install mido
@@ -16,3 +43,5 @@
     - arch: 
              
              sudo pacman -S fluidsynth soundfont-fluid
+
+ -->
