@@ -8,7 +8,7 @@ class Track:
 
         self.__oitava_padrao = oitava
         self.__instrumento = 0
-        self.__delay = 0
+        self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
 
         self.nota_atual: int = 0
@@ -57,10 +57,11 @@ class Track:
         else:
             raise Exception("delay não deve ser negativo")
 
-    def eh_atrasado(self) -> bool:
-        if '[' and ']' in self.texto_track and self.texto_track[0] == '[':
-            return True 
-        return False 
+    def calcula_delay(self, texto_track: str) -> int:
+        if '[' and ']' in texto_track and texto_track[0] == '[':
+            return (int(texto_track[1:texto_track.index(']')]))
+
+        return 0
 
     @property
     def instrumento(self):

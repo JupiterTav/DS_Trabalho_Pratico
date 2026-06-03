@@ -1,12 +1,8 @@
 from enum import Enum
 
 from mixer import Mixer
-from ui.campo_texto import CampoTexto
 from ui.janela_principal import JanelaPrincipal
 
-from core.gerador_vozes import GeradorVozes
-from core.gerenciador_midi import GerenciadorMidi
-from core.conversor import Conversor
 
 
 class MixerState(Enum):

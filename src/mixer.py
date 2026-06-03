@@ -3,11 +3,9 @@ from enum import Enum
 import pathlib
 
 from core.conversor import Conversor
-from core.gerador_vozes import GeradorVozes
 from core.gerenciador_midi import GerenciadorMidi
 from core.track import Track
 
-from core.voz import Voz
 from ui.campo_editavel import CampoEditavel 
 
 class MixerState(Enum):
@@ -21,7 +19,6 @@ class Mixer:
     def __init__(self) -> None:
 
         self.state = MixerState.EDITING 
-        self.__gerador_vozes: GeradorVozes = GeradorVozes()
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
         self.__vozes: list[Track] = []
         self.__arq_output: str = ""
@@ -35,9 +32,8 @@ class Mixer:
 
             for  i,campo in enumerate(list_campo):
                 print(f'campo {i}: {campo.campo_texto.get()}\n')
-                voz = Voz(campo.campo_texto.get(), 
+                voz = Track(campo.campo_texto.get(), 
                           int(campo.param_volume.get()), int((campo.param_oitava.get())))
-                print(voz.delay)
                 self.__vozes.append(voz)
 
             self.__arq_output = str(filepath)
