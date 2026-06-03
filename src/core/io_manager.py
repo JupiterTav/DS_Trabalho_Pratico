@@ -8,10 +8,7 @@ class IOManager:
             title="Abrir arquivo texto",
             filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
         )
-        if filepath:
-            with open(filepath, 'r', encoding='utf-8') as f:
-                return f.read(), filepath
-        return None, None
+        return pathlib.Path(filepath)
 
     @staticmethod
     def get_output_path() -> pathlib.Path:
