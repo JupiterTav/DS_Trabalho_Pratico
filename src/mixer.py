@@ -1,5 +1,8 @@
 from enum import Enum
 
+import pathlib
+
+from core.conversor import Conversor
 from core.gerador_vozes import GeradorVozes
 from core.gerenciador_midi import GerenciadorMidi
 from core.track import Track
@@ -8,30 +11,58 @@ from core.voz import Voz
 from ui.campo_editavel import CampoEditavel 
 
 class MixerState(Enum):
-    GENERATING = 0
-    SYNTHESIZING = 1
-    PLAYING = 2 
-    INACTIVE = 3
+    EDITING = 0
+    GENERATING = 1
+    SYNTHESIZING = 2
+    PLAYING = 3
+    QUIT = 4
 
 class Mixer:
     def __init__(self) -> None:
-        self.state = MixerState.INACTIVE
+
+        self.state = MixerState.EDITING 
         self.__gerador_vozes: GeradorVozes = GeradorVozes()
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
         self.__vozes: list[Track] = []
+        self.__arq_output: str = ""
 
-    def start(self, list_campo: list[CampoEditavel], filepath: str):
+
+    def start(self, list_campo: list[CampoEditavel], filepath: pathlib.Path):
         self.state = MixerState.GENERATING
         try: 
-            for  campo in list_campo:
-                voz = Voz(campo.campo_texto.get(), int(campo.param_volume.get()), int((campo.param_oitava.get())))
+            
+            print(list_campo)
+
+            for  i,campo in enumerate(list_campo):
+                print(f'campo {i}: {campo.campo_texto.get()}\n')
+                voz = Voz(campo.campo_texto.get(), 
+                          int(campo.param_volume.get()), int((campo.param_oitava.get())))
+                print(voz.delay)
                 self.__vozes.append(voz)
 
-            _ = self.__arq_midi.criar_arquivo(filepath)
+            self.__arq_output = str(filepath)
+
+            _ = self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
             self.__arq_midi.processar_arquivo(vozes=self.__vozes, global_vozes=self.__gerador_vozes)
-            self.__arq_midi.salvar_arquivo
+            self.__arq_midi.salvar_arquivo()
+            
+            print(self.__vozes)
 
+            self.synth()
+        except ValueError:
+            print(f"[Mixer] Erro Ao Generar o arquivo!\n ")
+    
+    def synth(self):
+        try: 
             self.state = MixerState.SYNTHESIZING
-        except ValueError as e:
-            print(f"Erro!\n {e}")
 
+            conversor = Conversor("assets/TimGM6mb.sf2")
+            _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
+                                           output_path=self.__arq_output, volume=100)
+            if _ == True:
+                self.state = MixerState.PLAYING
+        
+            if self.state == MixerState.PLAYING:
+                self.state = MixerState.QUIT
+        except ValueError:
+            print(f"[MIXER] Erro ao sintetizar!")

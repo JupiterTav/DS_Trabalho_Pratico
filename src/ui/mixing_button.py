@@ -27,7 +27,7 @@ class MixBotao(ctk.CTkFrame):
             return 
         else:
             path_file = pathlib.Path(file).resolve()
-            mixer.start(campos_texto, str(path_file.with_suffix('')))
+            mixer.start(campos_texto, path_file)
 
     def get_arquivo_usuario(self) -> str: 
         file = filedialog.asksaveasfilename(

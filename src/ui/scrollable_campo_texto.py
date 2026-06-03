@@ -16,7 +16,7 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.__instrumentos_padrao = ["6", "20", "0", "70"]
 
         self.campos: list[CampoEditavel] = []
-        self.campos.append(self.adiciona_campo())
+        self.adiciona_campo()
 
 
     def adiciona_campo(self) -> CampoEditavel: 
@@ -34,6 +34,7 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         print(f"[SCROLLABLE CAMPO TEXTO] {self._quant_campos}")
         self._quant_campos += 1
         
+        self.campos.append(camp_edit)
     
         self.__desenha_add_button()
         

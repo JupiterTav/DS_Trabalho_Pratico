@@ -19,13 +19,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def criar_arquivo(self, caminho: str) -> int:
         try:
-            os.makedirs(os.path.dirname(caminho), exist_ok=True)
-
-            if ".midi" in caminho or ".mid" in caminho:
-                self.__caminho = caminho
-            else:
-                self.__caminho = caminho + ".mid"
-
+            self.__caminho = caminho + ".mid"
             self.__arq_midi.save(self.__caminho)
 
         except OSError as e:
@@ -38,6 +32,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
     def processar_arquivo(self, vozes: list[Track], global_vozes: GeradorVozes):
         for i, voz in enumerate(vozes):
             track = self.criaTrack(track_name=f'voz {i}')
+
             track.append(MetaMessage('text', text=f'Melodia da voz {i}', time=0))
             track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
             track.append(self.__evento_midi.define_bpm(bpm=global_vozes.bpm_global))

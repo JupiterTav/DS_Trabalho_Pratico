@@ -24,33 +24,9 @@ class MixerState(Enum):
 
 def main():
     
-    mixer = Mixer()
-    
-    conversor = Conversor("assets/TimGM6mb.sf2")
+    mixer = Mixer()    
     janela = JanelaPrincipal(mixer=mixer)
 
-    texto = CampoTexto()
-    arquivo_midi = GerenciadorMidi()
-    estado = MixerState.EDITING
-    
-    if estado == MixerState.EDITING:
-        texto.le_texto()
-        #gerador_vozes = GeradorVozes()
-        #vozes = gerador_vozes.gerar_vozes(texto.Linhas)
-        
-        
-       # _ = arquivo_midi.criar_arquivo("build/saida.mid")
-       # arquivo_midi.processar_arquivo(vozes, gerador_vozes)
-       # arquivo_midi.salvar_arquivo()
-       # estado = MixerState.SYNTHESIZING
-
-    if estado == MixerState.SYNTHESIZING:
-        _ = conversor.converter_midi_audio(input_path=arquivo_midi.caminho, 
-                                           output_path="build/.wav", volume=100)
-        if _ == True:
-            estado = MixerState.PLAYING
-    if estado == MixerState.PLAYING:
-        estado = MixerState.QUIT
 
     janela.mainloop()
 if __name__ == "__main__":

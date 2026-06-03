@@ -10,6 +10,7 @@ class EventosMidi(EspecMidi):
     def interpretaEventoMidi(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self.notas_midi:
             voz.nota = self.notas_midi[char]
+
             track.append(self.__liga_nota(channel=channel, nota=voz.nota_atual, time=voz.delay))
             track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
 
