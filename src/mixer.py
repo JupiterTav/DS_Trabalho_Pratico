@@ -3,6 +3,7 @@ import pygame
 
 from enum import Enum
 
+from core.io_manager import IOManager
 from core.conversor import Conversor
 from core.gerenciador_midi import GerenciadorMidi
 from core.track import Track
@@ -24,10 +25,11 @@ class Mixer:
         self.__arq_output: str = ""
 
 
-    def start(self, list_campo: list[CampoEditavel], filepath: pathlib.Path):
+    def start(self, list_campo: list[CampoEditavel]):
         self.state = MixerState.GENERATING
         try: 
             
+            filepath = IOManager.get_output_path()
             print(list_campo)
 
             for  i,campo in enumerate(list_campo):
