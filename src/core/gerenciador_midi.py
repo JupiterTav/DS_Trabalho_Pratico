@@ -18,7 +18,10 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def criar_arquivo(self, caminho: str) -> int:
         try:
+            
             self.__caminho = caminho + ".mid"
+            if os.path.exists(self.__caminho):
+                os.remove(self.caminho)
             self.__arq_midi.save(self.__caminho)
 
         except OSError as e:

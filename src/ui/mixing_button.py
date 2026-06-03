@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import pathlib
 
 from tkinter import filedialog
 
