@@ -1,11 +1,11 @@
-from enum import Enum
-
 import pathlib
+import pygame
+
+from enum import Enum
 
 from core.conversor import Conversor
 from core.gerenciador_midi import GerenciadorMidi
 from core.track import Track
-
 from ui.campo_editavel import CampoEditavel 
 
 class MixerState(Enum):
@@ -52,13 +52,22 @@ class Mixer:
         try: 
             self.state = MixerState.SYNTHESIZING
 
+            pygame.mixer.init()
+
             conversor = Conversor("assets/TimGM6mb.sf2")
             _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
                                            output_path=self.__arq_output, volume=100)
             if _ == True:
-                self.state = MixerState.PLAYING
-        
-            if self.state == MixerState.PLAYING:
-                self.state = MixerState.QUIT
+                self.play()
         except ValueError:
             print(f"[MIXER] Erro ao sintetizar!")
+
+    def play(self):
+        self.state = MixerState.PLAYING
+        
+        pygame.mixer.music.load(self.__arq_output)
+        pygame.mixer.music.play(1)
+        pygame.mixer.music.set_volume(1.0)
+        
+        self.state = MixerState.EDITING
+
