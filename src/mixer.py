@@ -1,4 +1,3 @@
-import pathlib
 import pygame
 
 from enum import Enum
@@ -18,15 +17,21 @@ class MixerState(Enum):
 
 class Mixer:
     def __init__(self) -> None:
+        self.editing()
 
-        self.state = MixerState.EDITING 
+
+    def editing(self):
+        self.state: MixerState = MixerState.EDITING 
+        print("[MIXER] EDITING") 
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
         self.__vozes: list[Track] = []
         self.__arq_output: str = ""
+        self.loaded = False
 
 
     def start(self, list_campo: list[CampoEditavel]):
         self.state = MixerState.GENERATING
+        print("[MIXER] GENERATING") 
         try: 
             
             filepath = IOManager.get_output_path()
@@ -53,6 +58,7 @@ class Mixer:
     def synth(self):
         try: 
             self.state = MixerState.SYNTHESIZING
+            print("[MIXER] SYNTHESIZING")
 
             pygame.mixer.init()
 
@@ -60,16 +66,24 @@ class Mixer:
             _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
                                            output_path=self.__arq_output, volume=100)
             if _ == True:
-                self.play()
+                self.loaded = False
+                self.play_track()
         except ValueError:
             print(f"[MIXER] Erro ao sintetizar!")
 
-    def play(self):
+    def play_track(self):
         self.state = MixerState.PLAYING
-        
+        print("[MIXER] PLAYING") 
         pygame.mixer.music.load(self.__arq_output)
-        pygame.mixer.music.play(1)
-        pygame.mixer.music.set_volume(1.0)
+        self.loaded = True 
+        if self.loaded == True:
+            pygame.mixer.music.play(1)
+            pygame.mixer.music.set_volume(1.0)
+            if pygame.mixer.get_busy() == False:
+                self.state = MixerState.EDITING
+
+    def pause(self):
+        if self.state == MixerState.PLAYING:
+            pygame.mixer.music.pause()
         
-        self.state = MixerState.EDITING
 
