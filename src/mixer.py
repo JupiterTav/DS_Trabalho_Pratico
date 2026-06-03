@@ -2,7 +2,10 @@ from enum import Enum
 
 from core.gerador_vozes import GeradorVozes
 from core.gerenciador_midi import GerenciadorMidi
-from core.track import Track 
+from core.track import Track
+
+from core.voz import Voz
+from ui.campo_editavel import CampoEditavel 
 
 class MixerState(Enum):
     GENERATING = 0
@@ -15,12 +18,14 @@ class Mixer:
         self.state = MixerState.INACTIVE
         self.__gerador_vozes: GeradorVozes = GeradorVozes()
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
-        self.__vozes: list[Track] 
+        self.__vozes: list[Track] = []
 
-    def start(self, text_vozes: list[str], filepath: str):
+    def start(self, list_campo: list[CampoEditavel], filepath: str):
         self.state = MixerState.GENERATING
         try: 
-            self.__vozes = self.__gerador_vozes.gerar_vozes(text_vozes)
+            for  campo in list_campo:
+                voz = Voz(campo.campo_texto.get(), int(campo.param_volume.get()), int((campo.param_oitava.get())))
+                self.__vozes.append(voz)
 
             _ = self.__arq_midi.criar_arquivo(filepath)
             self.__arq_midi.processar_arquivo(vozes=self.__vozes, global_vozes=self.__gerador_vozes)

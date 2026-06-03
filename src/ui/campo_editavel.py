@@ -11,11 +11,14 @@ class CampoEditavel(ctk.CTkFrame):
         self.campo_texto = ctk.CTkEntry(self, width=750, height=70, corner_radius=10, font=("Arial", 16))
         self.campo_texto.grid(row=0, column=0, columnspan=2, sticky="ew")
         
-        self.param_oitava = ctk.CTkEntry(self, width=30, height=15, corner_radius=5, placeholder_text=oitava_inicial)
+        self.param_oitava = ctk.CTkEntry(self, width=30, height=15, corner_radius=5)
+        self.param_oitava.insert(0,oitava_inicial)
         self.param_oitava.grid(row=1, column=0, padx=0, sticky="nw")
 
-        self.param_volume = ctk.CTkEntry(self, width=70, height=15, corner_radius=5, placeholder_text=volume_inicial)
+        self.param_volume = ctk.CTkEntry(self, width=70, height=15, corner_radius=5)
+        self.param_volume.insert(0, volume_inicial)
         self.param_volume.grid(row=1, column=0, sticky="n")
 
         self.param_instrumento = ctk.CTkEntry(self, width=70, height=15, corner_radius=5, placeholder_text=instrumento_inicial)
+        self.param_instrumento.insert(0, instrumento_inicial)
         self.param_instrumento.grid(row=1, column=1, sticky="ne")

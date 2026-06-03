@@ -25,12 +25,13 @@ class JanelaPrincipal(ctk.CTk):
         self.cabecalho.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 
-        self.mix_botao = MixBotao(self, mixer=mixer)
-        self.mix_botao.grid(row=1, column=0, sticky="nsew")
         #self.row_icons_superiores.grid(row=1, column=0, sticky="nsew")
-
-        self.campo_principal = ScrollableCampoTexto(self, 1)
+        self.campo_principal = ScrollableCampoTexto(self)
         self.campo_principal.grid(row=2, column=0, sticky="nsew")
+
+        self.mix_botao = MixBotao(self, mixer=mixer, campos_texto=self.campo_principal.campos)
+
+        self.mix_botao.grid(row=1, column=0, sticky="nsew")
 
 #        self.row_principal = ctk.CTkScrollableFrame(self, width=self._current_width, height=400)
 #        self.row_principal.grid(row=2, column=0, sticky="nsew")
