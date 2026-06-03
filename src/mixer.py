@@ -43,7 +43,7 @@ class Mixer:
             self.__arq_output = str(filepath)
 
             _ = self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
-            self.__arq_midi.processar_arquivo(vozes=self.__vozes, global_vozes=self.__gerador_vozes)
+            self.__arq_midi.processar_arquivo(vozes=self.__vozes)
             self.__arq_midi.salvar_arquivo()
             
             print(self.__vozes)

@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from core.gerador_vozes import GeradorVozes
 from core.track import Track
 
 
@@ -10,7 +9,7 @@ class IGerenciador_arquivo(ABC):
         pass
 
     @abstractmethod
-    def processar_arquivo(self, vozes: list[Track], global_vozes: GeradorVozes):
+    def processar_arquivo(self, vozes: list[Track]):
         pass
 
     @abstractmethod
