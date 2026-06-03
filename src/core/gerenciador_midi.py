@@ -62,6 +62,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz, track=track)
                     else:
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+            track.append(self.__evento_midi.end_of_track())
 
 
     def criaTrack(self, *, track_name: str) -> MidiTrack:

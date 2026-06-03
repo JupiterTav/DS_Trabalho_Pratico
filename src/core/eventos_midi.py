@@ -43,3 +43,5 @@ class EventosMidi(EspecMidi):
 
     def atualiza_bpm(self) -> MetaMessage:
         return MetaMessage('set_tempo', tempo=bpm2tempo(self.bpm_global), time=0)
+    def end_of_track(self) -> MetaMessage:
+        return MetaMessage('end_of_track', time=0)
