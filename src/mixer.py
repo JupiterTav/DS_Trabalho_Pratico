@@ -27,6 +27,7 @@ class Mixer:
         self.__vozes: list[Track] = []
         self.__arq_output: str = ""
         self.loaded = False
+        self.paused = False
 
 
     def start(self, list_campo: list[CampoEditavel]):
@@ -81,9 +82,13 @@ class Mixer:
             pygame.mixer.music.set_volume(1.0)
             if pygame.mixer.get_busy() == False:
                 self.state = MixerState.EDITING
+                self.editing()
 
     def pause(self):
         if self.state == MixerState.PLAYING:
-            pygame.mixer.music.pause()
+            if self.paused == True:
+                pygame.mixer.music.play()
+            else:
+                pygame.mixer.music.pause()
         
 

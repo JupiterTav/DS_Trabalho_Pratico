@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from mixer import Mixer
+from ui.reproducao import Reproducao
 
 from .cabecalho import Cabecalho
 from .scrollable_campo_texto import ScrollableCampoTexto
@@ -30,8 +31,8 @@ class JanelaPrincipal(ctk.CTk):
         self.mix_botao = MixBotao(self, mixer=mixer, campos_texto=self.campo_principal.campos)
         self.mix_botao.grid(row=1, column=0, sticky="nsew")
 
-        self.row_icons_inferiores = ctk.CTkFrame(self, width=self._current_width, height=20)
-        self.row_icons_inferiores.grid(row=3, column=0, sticky="nsew")
+        self.icons_reproducao = Reproducao(self, mixer)
+        self.icons_reproducao.grid(row=3, column=0, sticky="nsew")
 
         self.row_reproduçao = ctk.CTkFrame(self, width=self._current_width, height=50)
         self.row_reproduçao.grid(row=4, column=0, sticky="nsew")
