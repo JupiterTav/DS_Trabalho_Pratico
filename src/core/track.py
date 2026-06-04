@@ -3,15 +3,15 @@ class Track:
 
     def __init__(self, texto_track: str, volume: int, oitava: int):
         self.__texto_track = texto_track
+
         self.__volume = volume
         self.__oitava = oitava
+        self.__instrumento = 0
 
         self.__oitava_padrao = oitava
-        self.__instrumento = 0
+
         self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
-
-        self.nota_atual: int = 0
 
     @property
     def texto_track(self):
@@ -59,7 +59,7 @@ class Track:
 
     def calcula_delay(self, texto_track: str) -> int:
         if '[' and ']' in texto_track and texto_track[0] == '[':
-            return (int(texto_track[1:texto_track.index(']')]))
+            return int(texto_track[1:texto_track.index(']')])
 
         return 0
 
@@ -79,5 +79,4 @@ class Track:
 
     @nota.setter
     def nota(self, value: int):
-        self.__nota = value
-        self.nota_atual = value + (12 * self.oitava)
+        self.__nota = value + (12 * self.oitava)

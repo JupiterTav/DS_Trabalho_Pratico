@@ -11,8 +11,8 @@ class EventosMidi(EspecMidi):
         if char in self.notas_midi:
             voz.nota = self.notas_midi[char]
 
-            track.append(self.__liga_nota(channel=channel, nota=voz.nota_atual, time=voz.delay))
-            track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
+            track.append(self.__liga_nota(channel=channel, nota=voz.nota, time=voz.delay))
+            track.append(self.__desliga_nota(channel=channel, nota=voz.nota))
 
         elif char in self.gm_intruments:
             voz.instrumento = self.gm_intruments[char]
@@ -27,7 +27,7 @@ class EventosMidi(EspecMidi):
                 track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
 
         else:
-            track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
+            track.append(self.__desliga_nota(channel=channel, nota=voz.nota))
 
     def __liga_nota(self, *, channel: int, nota: int, time: int) -> Message:
         return Message('note_on', channel=channel, note=nota, velocity=100, time=time * self.__TICKS_PER_BEAT)

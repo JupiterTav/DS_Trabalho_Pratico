@@ -9,7 +9,6 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.grid_columnconfigure(0, weight=1)
         self._quant_campos = 1 
 
-        
         self.__ciclo_valores_iniciais: int = 0
         self.__oitavas_padrao = ["6", "5", "4", "3"]
         self.__volumes_padrao = ["100", "80", "60", "40"]
@@ -17,7 +16,6 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
 
         self.campos: list[CampoTextoEditavel] = []
         self.adiciona_campo()
-
 
     def adiciona_campo(self) -> CampoTextoEditavel:
         if self.__ciclo_valores_iniciais % 4 == 0:
