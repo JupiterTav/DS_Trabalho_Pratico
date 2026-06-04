@@ -24,6 +24,6 @@ class IOManager:
         filepath = filedialog.asksaveasfilename(
             title="Salvar saída",
             defaultextension=".wav",
-            filetypes=[("wav", "*.wav"), ("mp3", "*.mp3"), ("ogg", "*.ogg")])
+            filetypes=[("wav", "*.wav")])
     
         return pathlib.Path(filepath)
