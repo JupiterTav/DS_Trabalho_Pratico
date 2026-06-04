@@ -5,7 +5,6 @@ from mido import  MetaMessage, MidiTrack, MidiFile
 from core.Igerenciador_arquivo import IGerenciador_arquivo
 from core.track import Track
 from core.eventos_midi import EventosMidi
-from core.gerador_vozes import GeradorVozes
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
@@ -19,13 +18,10 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def criar_arquivo(self, caminho: str) -> int:
         try:
-            os.makedirs(os.path.dirname(caminho), exist_ok=True)
-
-            if ".midi" in caminho or ".mid" in caminho:
-                self.__caminho = caminho
-            else:
-                self.__caminho = caminho + ".mid"
-
+            
+            self.__caminho = caminho + ".mid"
+            if os.path.exists(self.__caminho):
+                os.remove(self.caminho)
             self.__arq_midi.save(self.__caminho)
 
         except OSError as e:
@@ -35,12 +31,13 @@ class GerenciadorMidi(IGerenciador_arquivo):
         return 0
 
     @override
-    def processar_arquivo(self, vozes: list[Track], global_vozes: GeradorVozes):
+    def processar_arquivo(self, vozes: list[Track]):
         for i, voz in enumerate(vozes):
             track = self.criaTrack(track_name=f'voz {i}')
+
             track.append(MetaMessage('text', text=f'Melodia da voz {i}', time=0))
             track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
-            track.append(self.__evento_midi.define_bpm(bpm=global_vozes.bpm_global))
+            track.append(self.__evento_midi.atualiza_bpm())
 
             for j, char in enumerate(voz.texto_track):
                 if char == (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
@@ -51,11 +48,11 @@ class GerenciadorMidi(IGerenciador_arquivo):
                 elif char in 'V':
                     voz.oitava -= 1
                 elif char in '>':
-                    global_vozes.bpm_global += 10
-                    track.append(self.__evento_midi.define_bpm(bpm=global_vozes.bpm_global))
+                    self.__evento_midi.bpm_global += 10
+                    track.append(self.__evento_midi.atualiza_bpm())
                 elif char in '<':
-                    global_vozes.bpm_global -= 10
-                    track.append(self.__evento_midi.define_bpm(bpm=global_vozes.bpm_global))
+                    self.__evento_midi.bpm_global -= 10
+                    track.append(self.__evento_midi.atualiza_bpm())
                 elif char in ' ':
                     voz.volume *= 2
                     track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
@@ -65,6 +62,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz, track=track)
                     else:
                         self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+            track.append(self.__evento_midi.end_of_track())
 
 
     def criaTrack(self, *, track_name: str) -> MidiTrack:

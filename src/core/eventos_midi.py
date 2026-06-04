@@ -10,6 +10,7 @@ class EventosMidi(EspecMidi):
     def interpretaEventoMidi(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self.notas_midi:
             voz.nota = self.notas_midi[char]
+
             track.append(self.__liga_nota(channel=channel, nota=voz.nota_atual, time=voz.delay))
             track.append(self.__desliga_nota(channel=channel, nota=voz.nota_atual))
 
@@ -40,5 +41,7 @@ class EventosMidi(EspecMidi):
     def define_volume(self, *, channel: int,  volume: int) -> Message:
         return Message('control_change', channel=channel, control=7, value=volume)
 
-    def define_bpm(self, *, bpm: int) -> MetaMessage:
-        return MetaMessage('set_tempo', tempo=bpm2tempo(bpm), time=0)
+    def atualiza_bpm(self) -> MetaMessage:
+        return MetaMessage('set_tempo', tempo=bpm2tempo(self.bpm_global), time=0)
+    def end_of_track(self) -> MetaMessage:
+        return MetaMessage('end_of_track', time=0)

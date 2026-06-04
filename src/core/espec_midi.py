@@ -3,6 +3,8 @@ from abc import ABC
 
 class EspecMidi(ABC):
     def __init__(self):
+
+        self.bpm_global: int = 120
         self.notas_midi: dict[str, int] = {
             'A': 21,   # La (A0 = MIDI 21)
             'B': 23,   # Si (B0 = MIDI 23)
