@@ -8,7 +8,7 @@ from .scrollable_campo_texto import ScrollableCampoTexto
 from .mixing_button import MixBotao
 
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
+ctk.set_default_color_theme("blue")
 
 class JanelaPrincipal(ctk.CTk):
 
@@ -32,10 +32,6 @@ class JanelaPrincipal(ctk.CTk):
         self.mix_botao.grid(row=1, column=0, sticky="nsew")
 
         self.icons_reproducao = Reproducao(self, mixer)
-        self.icons_reproducao.grid(row=3, column=0, sticky="nsew")
-
-        self.row_reproduçao = ctk.CTkFrame(self, width=self._current_width, height=50)
-        self.row_reproduçao.grid(row=4, column=0, sticky="nsew")
-
+        self.icons_reproducao.grid(row=3, column=0, sticky="nsew", columnspan=3)
 
 

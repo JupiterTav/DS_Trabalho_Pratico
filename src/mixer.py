@@ -19,6 +19,7 @@ class Mixer:
     def __init__(self) -> None:
         pygame.mixer.init()
         self.editing()
+        self.loaded = False
 
 
     def editing(self):
@@ -27,7 +28,7 @@ class Mixer:
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
         self.__vozes: list[Track] = []
         self.__arq_output: str = ""
-        self.loaded = False
+
         self.paused = False
 
 
@@ -62,12 +63,10 @@ class Mixer:
             self.state = MixerState.SYNTHESIZING
             print("[MIXER] SYNTHESIZING")
 
-
             conversor = Conversor("assets/TimGM6mb.sf2")
             _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
                                            output_path=self.__arq_output, volume=100)
             if _ == True:
-                self.loaded = False
                 self.play_track()
         except ValueError:
             print(f"[MIXER] Erro ao sintetizar!")
@@ -77,17 +76,23 @@ class Mixer:
         print("[MIXER] PLAYING") 
         pygame.mixer.music.load(self.__arq_output)
         self.loaded = True 
-        if self.loaded == True:
-            pygame.mixer.music.play(1)
-            pygame.mixer.music.set_volume(1.0)
-            self.state = MixerState.EDITING
-            self.editing()
+        pygame.mixer.music.play(1)
+        pygame.mixer.music.set_volume(0.7)
+        self.state = MixerState.EDITING
+        self.editing()
 
-    def pause(self):
-        if self.state != MixerState.GENERATING and self.loaded == True: 
+    def on_pause(self):
+        if self.loaded == True: 
             if self.paused == False:
                 pygame.mixer.music.pause()
                 self.paused = True
             else:
-                pygame.mixer.music.pause()
-                self.paused = True
+                pygame.mixer.music.unpause()
+                self.paused = False
+    def on_play(self):
+        if self.loaded == True:
+            if self.paused == False:
+                pygame.mixer.music.rewind()
+                pygame.mixer.music.play()
+            else:
+                pygame.mixer.music.unpause()
