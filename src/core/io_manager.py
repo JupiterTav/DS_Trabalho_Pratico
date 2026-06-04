@@ -4,10 +4,19 @@ import pathlib
 class IOManager:
     @staticmethod
     def carrega_texto():
-        filepath = filedialog.askopenfilename(
-            title="Abrir arquivo texto",
-            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
-        )
+        filepath =filedialog.askopenfilename(
+            title="Selecionar arquivo texto",
+            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+
+        return pathlib.Path(filepath)
+    
+    @staticmethod
+    def salvar_arq():
+        filepath = filedialog.asksaveasfilename(
+            title="salvar texto",
+            defaultextension=".txt",
+            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+
         return pathlib.Path(filepath)
 
     @staticmethod
