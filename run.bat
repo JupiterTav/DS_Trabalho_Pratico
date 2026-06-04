@@ -1,3 +1,0 @@
-@echo off
-echo Iniciando o Piano Virtual...
-.venv\Scripts\python.exe src\main.py
