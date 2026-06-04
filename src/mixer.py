@@ -17,6 +17,7 @@ class MixerState(Enum):
 
 class Mixer:
     def __init__(self) -> None:
+        pygame.mixer.init()
         self.editing()
 
 
@@ -61,7 +62,6 @@ class Mixer:
             self.state = MixerState.SYNTHESIZING
             print("[MIXER] SYNTHESIZING")
 
-            pygame.mixer.init()
 
             conversor = Conversor("assets/TimGM6mb.sf2")
             _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
@@ -80,15 +80,14 @@ class Mixer:
         if self.loaded == True:
             pygame.mixer.music.play(1)
             pygame.mixer.music.set_volume(1.0)
-            if pygame.mixer.get_busy() == False:
-                self.state = MixerState.EDITING
-                self.editing()
+            self.state = MixerState.EDITING
+            self.editing()
 
     def pause(self):
-        if self.state == MixerState.PLAYING:
-            if self.paused == True:
-                pygame.mixer.music.play()
+        if self.state != MixerState.GENERATING and self.loaded == True: 
+            if self.paused == False:
+                pygame.mixer.music.pause()
+                self.paused = True
             else:
                 pygame.mixer.music.pause()
-        
-
+                self.paused = True
