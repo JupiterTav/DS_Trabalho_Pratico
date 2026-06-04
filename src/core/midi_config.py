@@ -1,7 +1,9 @@
 from abc import ABC
 
 
-class EspecMidi(ABC):
+class MIDIConfig(ABC):
+    _TICKS_PER_BEAT = 480
+
     def __init__(self):
 
         self.bpm_global: int = 120

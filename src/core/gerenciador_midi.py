@@ -4,14 +4,14 @@ from mido import  MetaMessage, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
 from core.track import Track
-from core.eventos_midi import EventosMidi
+from core.interpretador import Interpretador
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
 
     def __init__(self):
 
-        self.__evento_midi = EventosMidi()
+        self.__evento_midi = Interpretador()
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
         self.__caminho: str = ""
 

@@ -1,11 +1,9 @@
 from mido import Message, MetaMessage, bpm2tempo, MidiTrack
 from .track import Track as Voz
-from .espec_midi import EspecMidi
+from .midi_config import MIDIConfig
 
 
-class EventosMidi(EspecMidi):
-
-    __TICKS_PER_BEAT = 480
+class Interpretador(MIDIConfig):
 
     def interpretaEventoMidi(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self.notas_midi:
@@ -30,10 +28,10 @@ class EventosMidi(EspecMidi):
             track.append(self.__desliga_nota(channel=channel, nota=voz.nota))
 
     def __liga_nota(self, *, channel: int, nota: int, time: int) -> Message:
-        return Message('note_on', channel=channel, note=nota, velocity=100, time=time * self.__TICKS_PER_BEAT)
+        return Message('note_on', channel=channel, note=nota, velocity=100, time=time * self._TICKS_PER_BEAT)
 
     def __desliga_nota(self, *, channel: int, nota: int) -> Message:
-        return Message('note_off', channel=channel, note=nota, velocity=0, time=self.__TICKS_PER_BEAT)
+        return Message('note_off', channel=channel, note=nota, velocity=0, time=self._TICKS_PER_BEAT)
 
     def troca_instrumento(self, *, channel: int, instrumento: int) -> Message:
         return Message('program_change', channel=channel, program=instrumento)
