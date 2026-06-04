@@ -1,18 +1,20 @@
 # DS_Trabalho_Pratico
 
-### Dependencies
-- mido:
-    
-        pip install mido
+## Setup
 
-- pygame:
-        
-        pip install pygame 
-- custom tkinter
-
-        pip install customtkinter
+###     Criando um ambiente virtual
     
-- fluidsynth:
-    - arch: 
-             
-             sudo pacman -S fluidsynth soundfont-fluid
+    python -m venv path/to/venv
+### Acessando o ambiente virtual:
+
+#### Windows:
+    ./path/to/venv\Scripts\activate
+#### Linux 
+    source /path/to/venv/bin/activate
+
+### Dependências: 
+
+    pip install mido pygame customtkinter fluidsynth
+
+## How to Run
+    python src/main.py
