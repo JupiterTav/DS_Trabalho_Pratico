@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from .campo_editavel import CampoEditavel
+from .campo_texto_editavel import CampoTextoEditavel
 
 
 class ScrollableCampoTexto(ctk.CTkScrollableFrame):
@@ -15,18 +15,18 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.__volumes_padrao = ["100", "80", "60", "40"]
         self.__instrumentos_padrao = ["6", "20", "0", "70"]
 
-        self.campos: list[CampoEditavel] = []
+        self.campos: list[CampoTextoEditavel] = []
         self.adiciona_campo()
 
 
-    def adiciona_campo(self) -> CampoEditavel: 
+    def adiciona_campo(self) -> CampoTextoEditavel:
         if self.__ciclo_valores_iniciais % 4 == 0:
             self.__ciclo_valores_iniciais = 0 
             
-        camp_edit: CampoEditavel = CampoEditavel(self, 
-                                  oitava_inicial=self.__oitavas_padrao[self.__ciclo_valores_iniciais], 
-                                  volume_inicial=self.__volumes_padrao[self.__ciclo_valores_iniciais], 
-                                  instrumento_inicial=self.__instrumentos_padrao[self.__ciclo_valores_iniciais]) 
+        camp_edit: CampoTextoEditavel = CampoTextoEditavel(self,
+                                                           oitava_inicial=self.__oitavas_padrao[self.__ciclo_valores_iniciais],
+                                                           volume_inicial=self.__volumes_padrao[self.__ciclo_valores_iniciais],
+                                                           instrumento_inicial=self.__instrumentos_padrao[self.__ciclo_valores_iniciais])
         camp_edit.grid(row=self._quant_campos, column=0, ipady=15)
         
         self.__ciclo_valores_iniciais += 1

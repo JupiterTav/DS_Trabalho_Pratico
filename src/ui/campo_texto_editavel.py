@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class CampoEditavel(ctk.CTkFrame):
+class CampoTextoEditavel(ctk.CTkFrame):
     def __init__(self, master: ctk.CTkScrollableFrame, oitava_inicial, volume_inicial, instrumento_inicial):
         super().__init__(master)
 

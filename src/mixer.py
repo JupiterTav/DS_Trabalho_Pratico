@@ -8,7 +8,7 @@ from core.io_manager import IOManager
 from core.conversor import Conversor
 from core.gerenciador_midi import GerenciadorMidi
 from core.track import Track
-from ui.campo_editavel import CampoEditavel 
+from ui.campo_texto_editavel import CampoTextoEditavel
 
 class MixerState(Enum):
     EDITING = 0
@@ -21,6 +21,8 @@ class Mixer:
     paused: bool
 
     def __init__(self) -> None:
+        self.__vozes = None
+        self.__arq_midi = None
         self.__arq_output = None
         self.state = MixerState.EDITING
         pygame.mixer.init()
@@ -38,7 +40,7 @@ class Mixer:
 
         self.paused = False
 
-    def start(self, list_campo: list[CampoEditavel]):
+    def start(self, list_campo: list[CampoTextoEditavel]):
         try:
             filepath = IOManager.get_output_path()
 
@@ -91,7 +93,7 @@ class Mixer:
             pygame.mixer.music.set_volume(0.7)
 
             self.editing()
-        except:
+        except ValueError:
             print(f"[Mixer] Erro ao tocar")
 
     def on_pause(self):

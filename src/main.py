@@ -1,8 +1,5 @@
-from enum import Enum
-
 from mixer import Mixer
 from ui.janela_principal import JanelaPrincipal
-
 
 def main():
     

@@ -3,11 +3,11 @@ import customtkinter as ctk
 from tkinter import filedialog
 
 from mixer import Mixer
-from ui.campo_editavel import CampoEditavel
+from ui.campo_texto_editavel import CampoTextoEditavel
 
 
 class MixBotao(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, mixer: Mixer, campos_texto: list[CampoEditavel]):
+    def __init__(self, master: ctk.CTk, mixer: Mixer, campos_texto: list[CampoTextoEditavel]):
         super().__init__(master)
 
         self.grid_columnconfigure(0, weight=1)
@@ -18,7 +18,7 @@ class MixBotao(ctk.CTkFrame):
 
         self.button.grid(row=0, column=0, sticky="ne", padx=20, pady=10)
 
-    def inicia_mixer(self, mixer: Mixer, campos_texto: list[CampoEditavel]):
+    def inicia_mixer(self, mixer: Mixer, campos_texto: list[CampoTextoEditavel]):
         mixer.start(campos_texto)
 
     def get_arquivo_usuario(self) -> str: 
