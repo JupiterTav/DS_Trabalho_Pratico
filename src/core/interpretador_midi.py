@@ -1,11 +1,13 @@
 from mido import Message, MetaMessage, bpm2tempo, MidiTrack
+
+from . import Iinterpretador
 from .track import Track as Voz
 from .midi_config import MIDIConfig
 
 
-class Interpretador(MIDIConfig):
+class InterpretadorMidi(MIDIConfig, Iinterpretador):
 
-    def interpretaEventoMidi(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
+    def interpretar_char(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self.notas_midi:
             voz.nota = self.notas_midi[char]
 
@@ -27,10 +29,15 @@ class Interpretador(MIDIConfig):
         else:
             track.append(self.__desliga_nota(channel=channel, nota=voz.nota))
 
-    def __liga_nota(self, *, channel: int, nota: int, time: int) -> Message:
+    def is_interpretavel(self, char: str) -> bool:
+        if char == (self.notas_midi.keys() or self.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
+            return True
+        return False
+
+    def toca_char(self, *, channel: int, nota: int, time: int) -> Message:
         return Message('note_on', channel=channel, note=nota, velocity=100, time=time * self._TICKS_PER_BEAT)
 
-    def __desliga_nota(self, *, channel: int, nota: int) -> Message:
+    def desliga_char(self, *, channel: int, nota: int) -> Message:
         return Message('note_off', channel=channel, note=nota, velocity=0, time=self._TICKS_PER_BEAT)
 
     def troca_instrumento(self, *, channel: int, instrumento: int) -> Message:
