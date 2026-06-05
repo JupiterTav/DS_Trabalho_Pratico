@@ -4,14 +4,13 @@ from mido import  MetaMessage, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
 from core.track import Track
-from core.interpretador import Interpretador
-
+from core.interpretador_midi import  InterpretadorMidi
 
 class GerenciadorMidi(IGerenciador_arquivo):
 
     def __init__(self):
 
-        self.__evento_midi = Interpretador()
+        self.__evento_midi = InterpretadorMidi()
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
         self.__caminho: str = ""
 
@@ -40,8 +39,8 @@ class GerenciadorMidi(IGerenciador_arquivo):
             track.append(self.__evento_midi.atualiza_bpm())
 
             for j, char in enumerate(voz.texto_track):
-                if char == (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
-                    self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+                if self.__evento_midi.is_interpretavel(char):
+                    self.__evento_midi.interpretar_char(voz.texto_track[j], channel=i, voz=voz, track=track)
 
                 elif char in '?.':
                     voz.oitava += 1
@@ -59,9 +58,9 @@ class GerenciadorMidi(IGerenciador_arquivo):
 
                 else:
                     if voz.texto_track[j-1] in self.__evento_midi.notas_midi:
-                        self.__evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz, track=track)
+                        self.__evento_midi.interpretar_char(voz.texto_track[j-1], channel=i, voz=voz, track=track)
                     else:
-                        self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+                        self.__evento_midi.desliga_char(channel=i, nota=char)
             track.append(self.__evento_midi.end_of_track())
 
 

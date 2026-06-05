@@ -1,3 +1,5 @@
+from typing import override
+
 from mido import Message, MetaMessage, bpm2tempo, MidiTrack
 
 from . import Iinterpretador
@@ -5,7 +7,8 @@ from .track import Track as Voz
 from .midi_config import MIDIConfig
 
 
-class InterpretadorMidi(MIDIConfig, Iinterpretador):
+class InterpretadorMidi(MIDIConfig):
+
 
     def interpretar_char(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
         if char in self.notas_midi:
