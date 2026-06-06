@@ -38,30 +38,32 @@ class GerenciadorMidi(IGerenciador_arquivo):
             track.append(MetaMessage('text', text=f'Melodia da voz {i}', time=0))
             track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
             track.append(self.__evento_midi.atualiza_bpm())
-
+            nota_repetivel = ""
             for j, char in enumerate(voz.texto_track):
-                if char == (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
-                    self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+                if char in (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
+                    nota_repetivel = char
+                    self.__evento_midi.interpretaEventoMidi(char, channel=i, voz=voz, track=track)
 
                 elif char in '?.':
                     voz.oitava += 1
+                    nota_repetivel = ""
                 elif char in 'V':
                     voz.oitava -= 1
+                    nota_repetivel = ""
                 elif char in '>':
                     self.__evento_midi.bpm_global += 10
+                    nota_repetivel = ""
                     track.append(self.__evento_midi.atualiza_bpm())
                 elif char in '<':
                     self.__evento_midi.bpm_global -= 10
+                    nota_repetivel = ""
                     track.append(self.__evento_midi.atualiza_bpm())
                 elif char in ' ':
                     voz.volume *= 2
                     track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
 
                 else:
-                    if voz.texto_track[j-1] in self.__evento_midi.notas_midi:
-                        self.__evento_midi.interpretaEventoMidi(voz.texto_track[j-1], channel=i, voz=voz, track=track)
-                    else:
-                        self.__evento_midi.interpretaEventoMidi(voz.texto_track[j], channel=i, voz=voz, track=track)
+                    self.__evento_midi.interpretaEventoMidi(nota_repetivel, channel=i, voz=voz, track=track)
             track.append(self.__evento_midi.end_of_track())
 
 

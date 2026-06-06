@@ -59,8 +59,9 @@ class Track:
 
     def calcula_delay(self, texto_track: str) -> int:
         if '[' and ']' in texto_track and texto_track[0] == '[':
+            inicio = texto_track.index(']')+1
+            self.__texto_track = texto_track[inicio:]
             return int(texto_track[1:texto_track.index(']')])
-
         return 0
 
     @property
