@@ -4,14 +4,14 @@ from mido import  MetaMessage, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
 from core.track import Track
-from core.interpretador import Interpretador
+from core.interpretador_midi import InterpretadorMidi
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
 
     def __init__(self):
 
-        self.__evento_midi = Interpretador()
+        self.__evento_midi = InterpretadorMidi()
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
         self.__caminho: str = ""
 
@@ -42,7 +42,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
             for j, char in enumerate(voz.texto_track):
                 if char in (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
                     nota_repetivel = char
-                    self.__evento_midi.interpretaEventoMidi(char, channel=i, voz=voz, track=track)
+                    self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
                 elif char in '?.':
                     voz.oitava += 1
@@ -63,7 +63,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
                     track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
 
                 else:
-                    self.__evento_midi.interpretaEventoMidi(nota_repetivel, channel=i, voz=voz, track=track)
+                    self.__evento_midi.interpretar_char(nota_repetivel, channel=i, voz=voz, track=track)
             track.append(self.__evento_midi.end_of_track())
 
 
