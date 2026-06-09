@@ -16,7 +16,12 @@ class MIDIConfig(ABC):
             'F': 17,   # Fa (F0 = MIDI 17)
             'G': 19,   # Sol (G0 = MIDI 19)
             'H': 22,   # Si Bemol (Bb0 = MIDI 22)
-            'M': 27
+            'M': 27,
+            'Eb': 15,  # Mi Bemol
+            'Ab': 20,  # La Bemol
+            'Bb': 22,  # Si Bemol
+            'Db': 13,  # Re Bemol
+            'Gb': 18   # Sol Bemol
         }
 
         self.gm_intruments: dict[str, int]= {

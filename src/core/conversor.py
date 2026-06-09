@@ -1,4 +1,5 @@
 import subprocess
+import pathlib
 
 class Conversor:
 
@@ -7,10 +8,14 @@ class Conversor:
 
     def converter_midi_audio(self, *, input_path: str, output_path: str, volume: int) -> bool:
         #    fluidsynth [options] [ soundfonts ] [ midifiles ]
+        
+        caminho_local = pathlib.Path("fluidsynth/bin/fluidsynth.exe")
+        comando = str(caminho_local) if caminho_local.exists() else "fluidsynth"
+
         cli_conversor_comando = [ 
-                "fluidsynth",
+                comando,
                 '-ni',
-                '-r 44100',
+                '-r', '44100',
                 '-g',
                 str((volume) / 100),
                 '-F',
@@ -19,9 +24,11 @@ class Conversor:
                 input_path,
                 ]
         try:
-            completo = subprocess.run(cli_conversor_comando, check=True) 
+            subprocess.run(cli_conversor_comando, check=True) 
             print(f"{input_path} convertido para {output_path}")
             return True
         except FileNotFoundError as e:
-            print(f'{e.filename} nao encontrado\n Detalhe:\n {e.strerror}')
+            executable = e.filename if e.filename else comando
+            print(f'Comando ou arquivo "{executable}" nao encontrado\n Detalhe:\n {e.strerror}')
+            print("Certifique-se de que o Fluidsynth está instalado ou disponível na pasta do projeto.")
             return False

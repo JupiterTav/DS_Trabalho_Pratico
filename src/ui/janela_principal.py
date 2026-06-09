@@ -27,8 +27,19 @@ class JanelaPrincipal(ctk.CTk):
         self.cabecalho = Cabecalho(self, self.campo_principal)
         self.cabecalho.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
+        # Função de callback (Mediador) que coordena a ação sem acoplar os componentes
+        def ao_clicar_mix(on_finish, on_error):
+            bpm_inicial = self.cabecalho.get_bpm()
+            lista_campos = self.campo_principal.campos
+            
+            # Encapsula a finalização para garantir que o play_track seja chamado
+            def finalizacao_com_play():
+                on_finish()
+                mixer.play_track()
 
-        self.mix_botao = MixBotao(self, mixer=mixer, campos_texto=self.campo_principal.campos)
+            mixer.start(lista_campos, on_finish=finalizacao_com_play, on_error=on_error, bpm_inicial=bpm_inicial)
+
+        self.mix_botao = MixBotao(self, action_callback=ao_clicar_mix)
         self.mix_botao.grid(row=1, column=0, sticky="nsew")
 
         self.icons_reproducao = Reproducao(self, mixer)

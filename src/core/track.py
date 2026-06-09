@@ -70,7 +70,7 @@ class Track:
 
     @instrumento.setter
     def instrumento(self, value: int ):
-        if value >= 1 and value <= 128:
+        if value >= 0 and value <= 127:
             self.__instrumento = value
         else:
             raise Exception(f"não há intrumento general midi {value}")

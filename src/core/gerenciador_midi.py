@@ -37,33 +37,60 @@ class GerenciadorMidi(IGerenciador_arquivo):
 
             track.append(MetaMessage('text', text=f'Melodia da voz {i}', time=0))
             track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
+            track.append(self.__evento_midi.troca_instrumento(channel=i, instrumento=voz.instrumento))
             track.append(self.__evento_midi.atualiza_bpm())
-            nota_repetivel = ""
-            for j, char in enumerate(voz.texto_track):
-                if char in (self.__evento_midi.notas_midi.keys() or self.__evento_midi.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
-                    nota_repetivel = char
+            ultima_nota = ""
+            j = 0
+            texto = voz.texto_track
+            while j < len(texto):
+                char = texto[j]
+
+                # Suporte a Bemol (Ex: Eb, Ab)
+                if char in "ABCDEFG" and j + 1 < len(texto) and texto[j+1] == 'b':
+                    char = char + 'b'
+                    j += 1
+
+                # 1. Se for uma NOTA
+                if char in self.__evento_midi.notas_midi:
+                    ultima_nota = char
+                    self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
+
+                # 2. Se for uma PAUSA explícita (a-h minúsculas)
+                elif char in 'abcdefgh':
+                    ultima_nota = ""
+                    self.__evento_midi.interpretar_char("", channel=i, voz=voz, track=track)
+
+                # 3. Comandos que NÃO são notas (Limpam a memória de repetição)
+                elif char in self.__evento_midi.gm_intruments or char.isnumeric():
+                    ultima_nota = ""
                     self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
                 elif char in '?.':
                     voz.oitava += 1
-                    nota_repetivel = ""
+                    ultima_nota = ""
                 elif char in 'V':
                     voz.oitava -= 1
-                    nota_repetivel = ""
+                    ultima_nota = ""
                 elif char in '>':
                     self.__evento_midi.bpm_global += 10
-                    nota_repetivel = ""
                     track.append(self.__evento_midi.atualiza_bpm())
+                    ultima_nota = ""
                 elif char in '<':
                     self.__evento_midi.bpm_global -= 10
-                    nota_repetivel = ""
                     track.append(self.__evento_midi.atualiza_bpm())
+                    ultima_nota = ""
                 elif char in ' ':
                     voz.volume *= 2
                     track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
+                    ultima_nota = ""
 
+                # 4. Caracteres não classificados (X, Y, Z, consoantes, etc.)
                 else:
-                    self.__evento_midi.interpretar_char(nota_repetivel, channel=i, voz=voz, track=track)
+                    # Se o anterior era nota, REPETE (Trinado)
+                    # Se não era nota, PAUSA
+                    self.__evento_midi.interpretar_char(ultima_nota, channel=i, voz=voz, track=track)
+                
+                j += 1
             track.append(self.__evento_midi.end_of_track())
 
 
@@ -79,6 +106,9 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def salvar_arquivo(self):
         self.__arq_midi.save(filename=self.__caminho)
+
+    def set_bpm(self, bpm: int):
+        self.__evento_midi.bpm_global = bpm
     
     @property
     def caminho(self) -> str:

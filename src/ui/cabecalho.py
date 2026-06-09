@@ -23,6 +23,20 @@ class Cabecalho(ctk.CTkFrame):
                                                          command=lambda: self.download_text(text_area))
         self.download_txt.grid(row=0, column=0, sticky="e")
 
+        # Campo de BPM Inicial
+        self.label_bpm = ctk.CTkLabel(self, text="BPM:", font=("Arial", 14, "bold"))
+        self.label_bpm.grid(row=0, column=0, padx=(200, 0), sticky="w")
+        
+        self.campo_bpm = ctk.CTkEntry(self, width=50, height=30, corner_radius=5)
+        self.campo_bpm.insert(0, "120")
+        self.campo_bpm.grid(row=0, column=0, padx=(250, 0), sticky="w")
+
+    def get_bpm(self) -> int:
+        try:
+            bpm = int(self.campo_bpm.get())
+            return bpm if bpm > 0 else 120
+        except ValueError:
+            return 120
 
     def upload_arq_texto(self, campos_texto: ScrollableCampoTexto):
         self.txt: pathlib.Path = IOManager.carrega_texto()

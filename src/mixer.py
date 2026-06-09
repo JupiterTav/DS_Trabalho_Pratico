@@ -40,18 +40,36 @@ class Mixer:
 
         self.paused = False
 
-    def start(self, list_campo: list[CampoTextoEditavel]):
+    def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None, bpm_inicial=120):
         try:
             filepath = IOManager.get_output_path()
 
+            # Configura o BPM inicial no gerador
+            self.__arq_midi.set_bpm(bpm_inicial)
+
+            self.__vozes = [] # Limpa as vozes anteriores
             for  campo in list_campo:
                 voz = Track(campo.campo_texto.get(), 
                           int(campo.param_volume.get()), int((campo.param_oitava.get())))
+                
+                # Lê o instrumento da interface e define na trilha
+                try:
+                    instrumento = int(campo.param_instrumento.get())
+                    voz.instrumento = instrumento
+                except (ValueError, Exception):
+                    voz.instrumento = 0 # Fallback para piano se der erro
+
                 self.__vozes.append(voz)
 
             self.generate(filepath)
-        except ValueError:
-            print("[Mixer] Erro ao inicializar")
+            
+            if on_finish:
+                on_finish()
+                
+        except Exception as e:
+            print(f"[Mixer] Erro ao inicializar: {e}")
+            if on_error:
+                on_error(str(e))
 
     def generate(self, filepath: pathlib.Path):
         try:

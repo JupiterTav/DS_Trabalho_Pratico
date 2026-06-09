@@ -21,18 +21,22 @@ class InterpretadorMidi(MIDIConfig):
             track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
 
         elif char.isnumeric():
-            if (int(char) % 2) == 0:
-                voz.instrumento += 1
+            numero = int(char)
+            if (numero % 2) == 0:
+                voz.instrumento += numero
                 track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
             else:
-                voz.instrumento = 14
+                voz.instrumento = 14 # Tubular Bells ou similar fixo
                 track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
 
         else:
             track.append(self._desliga_nota(channel=channel, nota=voz.nota))
 
     def is_interpretavel(self, char: str) -> bool:
-        if char == (self.notas_midi.keys() or self.gm_intruments.keys() or 'abcdefgh' or char.isnumeric()):
+        if (char in self.notas_midi or 
+            char in self.gm_intruments or 
+            char in 'abcdefgh' or 
+            char.isnumeric()):
             return True
         return False
 
