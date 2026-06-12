@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-class Nota(ABC):
+class ICharacter(ABC):
 
     @abstractmethod
-    def nota_comando(self):
+    def character_comando(self):
         pass
 
     @abstractmethod
-    def nota_comando_mido(self):
+    def character_comando_midi(self):
         pass
