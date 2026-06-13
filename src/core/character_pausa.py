@@ -9,7 +9,6 @@ class CharacterPausa(ICharacter):
     def __init__(self, char):
         super().__init__(char)
 
-    @override
     def character_comando(self, output: pygame.midi.Output, channel: int):
         super().character_comando()
         output.note_off(super().nota, velocity=0, channel=channel)

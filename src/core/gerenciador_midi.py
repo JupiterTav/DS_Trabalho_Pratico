@@ -3,7 +3,7 @@ from typing import  override
 from mido import  MetaMessage, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
-from core.track import Track
+from core.voz import Voz
 from core.interpretador_midi import InterpretadorMidi
 
 
@@ -31,7 +31,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
         return 0
 
     @override
-    def processar_arquivo(self, vozes: list[Track]):
+    def processar_arquivo(self, vozes: list[Voz]):
         for i, voz in enumerate(vozes):
             track = self.criaTrack(track_name=f'voz {i}')
 

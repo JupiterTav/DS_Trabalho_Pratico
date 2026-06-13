@@ -1,7 +1,13 @@
-class Track:
+from core import config_mapeamento
+from core.character_instrumento import CharacterInstrumento
+from core.character_voz import CharacterVoz
+from core.interpretador import Interpretador
+
+class Voz(Interpretador):
     __VOLUME_MAXIMO = 127
 
     def __init__(self, texto_track: str, volume: int, oitava: int):
+        super().__init__()
         self.__texto_track = texto_track
 
         self.__volume = volume
@@ -12,6 +18,14 @@ class Track:
 
         self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
+
+    def interpretar(self, char: str) -> None:
+        super().interpretar(char)
+
+        if char in config_mapeamento.gm_intruments or char.isnumeric():
+            self.characteres.append(CharacterInstrumento(self.instrumento))
+        elif char in config_mapeamento.character_voz:
+            self.characteres.append(CharacterVoz(char, self))
 
     @property
     def texto_track(self):
@@ -49,13 +63,6 @@ class Track:
             return delayed
         else:
             return self.__delay
-
-    @delay.setter
-    def delay(self, value: int):
-        if value >= 0:
-            self.__delay = value
-        else:
-            raise Exception("delay não deve ser negativo")
 
     def calcula_delay(self, texto_track: str) -> int:
         if '[' and ']' in texto_track and texto_track[0] == '[':

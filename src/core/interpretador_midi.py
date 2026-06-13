@@ -2,7 +2,7 @@ from typing import override
 
 from mido import Message, MetaMessage, bpm2tempo, MidiTrack
 
-from .track import Track as Voz
+from .voz import Voz as Voz
 from .midi_config import MIDIConfig
 
 

@@ -7,7 +7,7 @@ from enum import Enum
 from core.io_manager import IOManager
 from core.conversor import Conversor
 from core.gerenciador_midi import GerenciadorMidi
-from core.track import Track
+from core.voz import Voz
 from ui.campo_texto_editavel import CampoTextoEditavel
 
 class MixerState(Enum):
@@ -35,7 +35,7 @@ class Mixer:
         print("[MIXER] EDITING")
 
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
-        self.__vozes: list[Track] = []
+        self.__vozes: list[Voz] = []
         self.__arq_output: str = ""
 
         self.paused = False
@@ -49,7 +49,7 @@ class Mixer:
 
             self.__vozes = [] # Limpa as vozes anteriores
             for  campo in list_campo:
-                voz = Track(campo.campo_texto.get(), 
+                voz = Voz(campo.campo_texto.get(),
                           int(campo.param_volume.get()), int((campo.param_oitava.get())))
                 
                 # Lê o instrumento da interface e define na trilha

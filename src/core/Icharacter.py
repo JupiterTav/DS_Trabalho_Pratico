@@ -5,7 +5,7 @@ import pygame.midi
 from abc import ABC, abstractmethod
 
 class ICharacter(ABC):
-    def __init__(self, simbolo: int):
+    def __init__(self, simbolo):
         self.nota = simbolo
     @abstractmethod
     def character_comando(self):

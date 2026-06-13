@@ -1,4 +1,5 @@
 bpm_global: int = 120
+
 notas_midi: dict[str, int] = {
     'A': 21,  # La (A0 = MIDI 21)
     'B': 23,  # Si (B0 = MIDI 23)
@@ -10,6 +11,10 @@ notas_midi: dict[str, int] = {
     'H': 22,  # Si Bemol (Bb0 = MIDI 22)
     'Mb': 15,  # Mi Bemol
     }
+
+character_voz: set[str] = {
+    '?', '.', ' ', 'V'
+}
 
 character_pausa: set[str] = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'

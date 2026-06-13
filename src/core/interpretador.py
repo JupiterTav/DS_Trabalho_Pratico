@@ -12,6 +12,4 @@ class Interpretador:
             self.characteres.append(character_nota.CharacterNota(config_mapeamento.notas_midi[char]))
         elif char in config_mapeamento.character_pausa:
             self.characteres.append(character_pausa.CharacterPausa(char))
-        elif char in config_mapeamento.gm_intruments:
-            self.characteres.append(character_instrumento.CharacterInstrumento(config_mapeamento.gm_intruments[char]))
         return None
