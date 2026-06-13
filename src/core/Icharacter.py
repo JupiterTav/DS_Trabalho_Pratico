@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 
 class ICharacter(ABC):
     def __init__(self, simbolo: int):
-        self.note = simbolo
+        self.nota = simbolo
     @abstractmethod
     def character_comando(self):
         pass

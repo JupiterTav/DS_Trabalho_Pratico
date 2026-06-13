@@ -1,4 +1,4 @@
-from typing import override, overload
+from typing import override
 from mido import Message
 import pygame.midi
 
@@ -8,10 +8,10 @@ class CharacterNota(ICharacter):
     def __init__(self, nota):
         super().__init__(nota)
 
-    @override
     def character_comando(self, volume: int, channel: int, output: pygame.midi.Output) -> None:
-        output.note_on(self.value, velocity=volume, channel=channel)
+        super().character_comando()
+        output.note_on(super().nota, velocity=volume, channel=channel)
 
-    @override
     def character_comando_midi(self, volume: int, channel: int, time: int) -> Message:
-        return Message("note_on", note=self.value, channel=channel, velocity=volume, time=time*480)
+        super().character_comando_midi()
+        return Message("note_on", note=super().nota, channel=channel, velocity=volume, time=time*480)

@@ -11,6 +11,10 @@ notas_midi: dict[str, int] = {
     'Mb': 15,  # Mi Bemol
     }
 
+character_pausa: set[str] = {
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
+}
+
 gm_intruments: dict[str, int] = {
     '!': 21,
     'O': 109,
