@@ -4,14 +4,14 @@ from mido import Message
 from core.Icharacter import ICharacter
 
 class CharacterInstrumento(ICharacter):
-    def __init__(self, char):
-        super().__init__(char)
+    def __init__(self, char, output: pygame.midi.Output, voz):
+        super().__init__(char, output, voz)
 
-    def character_comando(self, instrumento: int, channel: int,output: pygame.midi.Output):
+    def character_comando(self):
         super().character_comando()
-        output.set_instrument(instrument_id=instrumento, channel=channel)
+        self.output.set_instrument(instrument_id=self.voz.instrumento, channel=self.voz.channel)
 
 
-    def character_comando_midi(self, channel: int, instrumento: int) -> Message:
+    def character_comando_midi(self) -> Message:
         super().character_comando_midi()
-        return Message("program_change", channel=channel, program=instrumento)
+        return Message("program_change", channel=self.voz.channel, program=self.voz.instrumento)

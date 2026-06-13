@@ -20,6 +20,8 @@ character_pausa: set[str] = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
 }
 
+character_global: set[str] = { '>', '<'}
+
 gm_intruments: dict[str, int] = {
     '!': 21,
     'O': 109,

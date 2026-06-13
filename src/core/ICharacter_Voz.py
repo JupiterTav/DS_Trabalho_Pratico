@@ -1,15 +1,9 @@
-from typing import overload
-
-import pygame.midi
-
 from abc import ABC, abstractmethod
 
-class ICharacter(ABC):
-    def __init__(self, simbolo, output: pygame.midi.Output, voz):
+class ICharacterVoz(ABC):
+    def __init__(self, simbolo, voz):
         self.nota = simbolo
-        self.output = output
         self.voz = voz
-
     @abstractmethod
     def character_comando(self):
         pass

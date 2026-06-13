@@ -1,6 +1,6 @@
 from core import config_mapeamento
 from core import Icharacter, character_nota, character_pausa, character_instrumento
-
+from core.character_global import CharacterGlobal
 
 
 class Interpretador:
@@ -12,4 +12,6 @@ class Interpretador:
             self.characteres.append(character_nota.CharacterNota(config_mapeamento.notas_midi[char]))
         elif char in config_mapeamento.character_pausa:
             self.characteres.append(character_pausa.CharacterPausa(char))
+        elif char in config_mapeamento.character_global:
+            self.characteres.append(CharacterGlobal(char))
         return None

@@ -39,13 +39,14 @@ class GerenciadorMidi(IGerenciador_arquivo):
             track.append(self.__evento_midi.define_volume(channel=i, volume=voz.volume))
             track.append(self.__evento_midi.troca_instrumento(channel=i, instrumento=voz.instrumento))
             track.append(self.__evento_midi.atualiza_bpm())
-            ultima_nota = ""
+#            ultima_nota = ""
             j = 0
             texto = voz.texto_track
             while j < len(texto):
-                char = texto[j]
+                track.append(voz.characteres[j].character_comando_midi())
+                j += 1
 
-                # Suporte a Bemol (Ex: Eb, Ab)
+    """            # Suporte a Bemol (Ex: Eb, Ab)
                 if char in "ABCDEFG" and j + 1 < len(texto) and texto[j+1] == 'b':
                     char = char + 'b'
                     j += 1
@@ -90,8 +91,8 @@ class GerenciadorMidi(IGerenciador_arquivo):
                     # Se não era nota, PAUSA
                     self.__evento_midi.interpretar_char(ultima_nota, channel=i, voz=voz, track=track)
                 
-                j += 1
-            track.append(self.__evento_midi.end_of_track())
+                j += 1"""
+            #track.append(self.__evento_midi.end_of_track())
 
 
     def criaTrack(self, *, track_name: str) -> MidiTrack:

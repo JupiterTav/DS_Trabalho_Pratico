@@ -6,15 +6,15 @@ from core.Icharacter import ICharacter
 
 
 class CharacterPausa(ICharacter):
-    def __init__(self, char):
-        super().__init__(char)
+    def __init__(self, char, output: pygame.midi.Output ,voz):
+        super().__init__(char, output, voz)
+        self.voz = voz
 
-    def character_comando(self, output: pygame.midi.Output, channel: int):
+    def character_comando(self):
         super().character_comando()
-        output.note_off(super().nota, velocity=0, channel=channel)
+        self.output.note_off(super().nota, velocity=0, channel=self.voz.channel)
         pass
     
-    def character_comando_midi(self, channel: int) -> Message:
+    def character_comando_midi(self) -> Message:
         super().character_comando_midi()
-        return Message("note_off", note=super().nota ,velocity=0, channel=channel)
-        pass
+        return Message("note_off", note=super().nota ,velocity=0, channel=self.voz.channel)

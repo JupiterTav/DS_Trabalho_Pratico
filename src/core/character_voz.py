@@ -1,9 +1,8 @@
 from core import config_mapeamento
-from core.Icharacter import ICharacter
-from core.voz import Voz
+from core.ICharacter_Voz import ICharacterVoz
 
-class CharacterVoz(ICharacter):
-    def __init__(self, char, voz: Voz):
+class CharacterVoz(ICharacterVoz):
+    def __init__(self, char, voz):
         super().__init__(char)
         self.voz = voz
 

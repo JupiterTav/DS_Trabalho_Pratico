@@ -6,18 +6,22 @@ from core.interpretador import Interpretador
 class Voz(Interpretador):
     __VOLUME_MAXIMO = 127
 
-    def __init__(self, texto_track: str, volume: int, oitava: int):
+    def __init__(self, texto_track: str, volume: int, oitava: int, channel: int):
         super().__init__()
         self.__texto_track = texto_track
 
         self.__volume = volume
         self.__oitava = oitava
         self.__instrumento = 0
-
         self.__oitava_padrao = oitava
+        self.channel = channel
 
         self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
+
+        for char in texto_track:
+            self.interpretar(char)
+
 
     def interpretar(self, char: str) -> None:
         super().interpretar(char)

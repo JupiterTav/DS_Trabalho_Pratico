@@ -48,9 +48,9 @@ class Mixer:
             self.__arq_midi.set_bpm(bpm_inicial)
 
             self.__vozes = [] # Limpa as vozes anteriores
-            for  campo in list_campo:
+            for i, campo in enumerate(list_campo):
                 voz = Voz(campo.campo_texto.get(),
-                          int(campo.param_volume.get()), int((campo.param_oitava.get())))
+                          int(campo.param_volume.get()), int((campo.param_oitava.get())), i)
                 
                 # Lê o instrumento da interface e define na trilha
                 try:
