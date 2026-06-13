@@ -1,12 +1,17 @@
+import pygame
+
 from core import config_mapeamento
+from core.character_global import CharacterGlobal
 from core.character_instrumento import CharacterInstrumento
+from core.character_nota import CharacterNota
+from core.character_pausa import CharacterPausa
 from core.character_voz import CharacterVoz
 from core.interpretador import Interpretador
 
 class Voz(Interpretador):
     __VOLUME_MAXIMO = 127
 
-    def __init__(self, texto_track: str, volume: int, oitava: int, channel: int):
+    def __init__(self, texto_track: str, volume: int, oitava: int, channel: int, output: pygame.midi.Output):
         super().__init__()
         self.__texto_track = texto_track
 
@@ -19,17 +24,25 @@ class Voz(Interpretador):
         self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
 
+        self.output = output
+
         for char in texto_track:
             self.interpretar(char)
+        print(self.characteres)
 
 
     def interpretar(self, char: str) -> None:
         super().interpretar(char)
-
+        if char in config_mapeamento.notas_midi:
+            self.characteres.append(CharacterNota(config_mapeamento.notas_midi[char], self.output, self))
+        elif char in config_mapeamento.character_pausa:
+            self.characteres.append(CharacterPausa(char, self.output, self))
+        elif char in config_mapeamento.character_global:
+            self.characteres.append(CharacterGlobal(char, self.output, self))
         if char in config_mapeamento.gm_intruments or char.isnumeric():
-            self.characteres.append(CharacterInstrumento(self.instrumento))
+            self.characteres.append(CharacterInstrumento(self.instrumento, self.output, self))
         elif char in config_mapeamento.character_voz:
-            self.characteres.append(CharacterVoz(char, self))
+            self.characteres.append(CharacterVoz(char, self, self.output))
 
     @property
     def texto_track(self):

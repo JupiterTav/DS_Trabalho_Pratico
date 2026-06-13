@@ -1,9 +1,11 @@
-from core import config_mapeamento
-from core.ICharacter_Voz import ICharacterVoz
+import pygame.midi
 
-class CharacterVoz(ICharacterVoz):
-    def __init__(self, char, voz):
-        super().__init__(char)
+from core import config_mapeamento
+from core.Icharacter import ICharacter
+
+class CharacterVoz(ICharacter):
+    def __init__(self, char, voz, output: pygame.midi.Output):
+        super().__init__(char, output, voz)
         self.voz = voz
 
     def character_comando(self):

@@ -11,10 +11,8 @@ class CharacterPausa(ICharacter):
         self.voz = voz
 
     def character_comando(self):
-        super().character_comando()
-        self.output.note_off(super().nota, velocity=0, channel=self.voz.channel)
+        self.output.note_off(self.nota, velocity=0, channel=self.voz.channel)
         pass
     
     def character_comando_midi(self) -> Message:
-        super().character_comando_midi()
-        return Message("note_off", note=super().nota ,velocity=0, channel=self.voz.channel)
+        return Message("note_off", note=self.nota ,velocity=0, channel=self.voz.channel)

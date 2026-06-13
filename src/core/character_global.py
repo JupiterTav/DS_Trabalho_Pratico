@@ -1,5 +1,6 @@
 from typing import overload
 
+import pygame.midi
 from mido import MetaMessage, bpm2tempo
 
 from core import config_mapeamento
@@ -7,8 +8,8 @@ from core.Icharacter import ICharacter
 
 
 class CharacterGlobal(ICharacter):
-    def __init__(self, char):
-        super().__init__(char)
+    def __init__(self, char, output: pygame.midi.Output, voz):
+        super().__init__(char, output, voz)
         self.variacao_bpm = 10
 
     def character_comando(self):
