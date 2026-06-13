@@ -1,3 +1,7 @@
+from typing import overload
+
+import pygame.midi
+
 from abc import ABC, abstractmethod
 
 class ICharacter(ABC):
