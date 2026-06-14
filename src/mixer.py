@@ -26,8 +26,6 @@ class Mixer:
         self.__arq_output = ""
         self.state = MixerState.EDITING
         pygame.mixer.init()
-
-        self.loaded = False
         self.editing()
 
     def editing(self):
@@ -42,12 +40,10 @@ class Mixer:
     def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None):
         try:
 
-            self.__vozes = []  # Limpa as vozes anteriores
+            self.__vozes = []
             for i, campo in enumerate(list_campo):
                 voz = Voz(campo.campo_texto.get(),
                           int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i)
-
-                # Lê o instrumento da interface e define na trilha
                 try:
                     instrumento = int(campo.param_instrumento.get())
                     voz.instrumento = instrumento
@@ -115,8 +111,6 @@ class Mixer:
         print("[MIXER] PLAYING")
         try:
             pygame.mixer.music.load(self.__arq_output)
-            self.loaded = True
-
             pygame.mixer.music.set_volume(0.7)
             pygame.mixer.music.play(1)
 
@@ -125,17 +119,15 @@ class Mixer:
             print(f"[Mixer] Erro ao tocar")
 
     def on_pause(self):
-        if self.loaded:
-            if self.paused:
-                pygame.mixer.music.unpause()
-            else:
-                pygame.mixer.music.pause()
-            self.paused = not self.paused
+        if self.paused:
+            pygame.mixer.music.unpause()
+        else:
+            pygame.mixer.music.pause()
+        self.paused = not self.paused
 
     def on_play(self):
-        if self.loaded:
-            if self.paused:
-                pygame.mixer.music.unpause()
-            else:
-                pygame.mixer.music.rewind()
-                pygame.mixer.music.play()
+        if self.paused:
+            pygame.mixer.music.unpause()
+        else:
+            pygame.mixer.music.rewind()
+            pygame.mixer.music.play()
