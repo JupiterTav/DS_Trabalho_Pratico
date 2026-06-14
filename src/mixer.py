@@ -77,8 +77,8 @@ class Mixer:
             print("[MIXER] GENERATING")
 
             self.__arq_output = str(filepath)
-
             self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
+            
             for i,voz in enumerate(self.__vozes):
                 atual_track = self.__arq_midi.criaTrack(track_name=f"Track {i}", channel=voz.channel, volume_inicial=voz.volume, 
                                                                                              instrumento_inicial=voz.instrumento)

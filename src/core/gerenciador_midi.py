@@ -1,23 +1,21 @@
 import os
-from typing import  override
-from mido import  Message, MetaMessage, MidiTrack, MidiFile
+from typing import override
+
+from mido import Message, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
-from core.interpretador_midi import InterpretadorMidi
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
 
     def __init__(self):
-
-        self.__evento_midi = InterpretadorMidi()
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
         self.__caminho: str = ""
 
     @override
     def criar_arquivo(self, caminho: str) -> int:
         try:
-            
+
             self.__caminho = caminho + ".mid"
             if os.path.exists(self.__caminho):
                 os.remove(self.caminho)
@@ -47,7 +45,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
 
     def set_bpm(self, bpm: int):
         self.__evento_midi.bpm_global = bpm
-    
+
     @property
     def caminho(self) -> str:
         if not os.path.exists(self.__caminho):
