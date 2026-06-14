@@ -1,4 +1,5 @@
 from core import config_mapeamento
+from core.characteres.Icharacter import ICharacter
 from core.characteres.character_global import CharacterGlobal
 from core.characteres.character_instrumento import CharacterInstrumento
 from core.characteres.character_nota import CharacterNota
@@ -27,31 +28,29 @@ class Voz(Interpretador):
         for i, char in enumerate(texto_track):
             if i + 1 < len(texto_track) and char in 'M' and texto_track[i + 1] == 'b':
                 char = 'Mb'
-            self.interpretar(char)
 
-    def interpretar(self, char: str) -> None:
+    def interpretar(self, char: str) -> ICharacter:
         super().interpretar(char)
 
         if char in config_mapeamento.notas_midi:
             self.nota = config_mapeamento.notas_midi[char]
-            self.characteres.append(CharacterNota(self.nota, self))
             self.__nota_repetivel = char
+            return CharacterNota(self.nota, self)
 
         elif char in config_mapeamento.character_pausa:
             self.__nota_repetivel = ""
-            self.characteres.append(CharacterPausa(char, self))
+            return CharacterPausa(char, self)
 
         elif char in config_mapeamento.character_global:
             self.__nota_repetivel = ""
-            self.characteres.append(CharacterGlobal(char, self))
-
+            return CharacterGlobal(char, self)
         elif char in config_mapeamento.gm_intruments or char.isnumeric():
             self.__nota_repetivel = ""
-            self.characteres.append(CharacterInstrumento(char, self))
+            return CharacterInstrumento(char, self)
 
         elif char in config_mapeamento.character_voz:
             self.__nota_repetivel = ""
-            self.characteres.append(CharacterVoz(char, self))
+            return CharacterVoz(char, self)
 
     @property
     def texto_track(self):
@@ -76,7 +75,7 @@ class Voz(Interpretador):
 
     @oitava.setter
     def oitava(self, value: int):
-        if value <= 9 and value >= 0:
+        if value >= 0 and value <= 9:
             self.__oitava = value
         else:
             self.__oitava = self.__oitava_padrao
@@ -114,4 +113,4 @@ class Voz(Interpretador):
 
     @nota.setter
     def nota(self, value: int):
-        self.__nota = value + (12 * self.oitava)
+        self.__nota = value + (12 * self.__oitava)
