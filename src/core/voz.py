@@ -34,23 +34,28 @@ class Voz(Interpretador):
 
         if char in config_mapeamento.notas_midi:
             self.nota = config_mapeamento.notas_midi[char]
-            self.__nota_repetivel = char
+            self.__nota_repetivel = self.nota
             return CharacterNota(self.nota, self)
 
         elif char in config_mapeamento.character_pausa:
-            self.__nota_repetivel = ""
+            self.__nota_repetivel = -1
             return CharacterPausa(char, self)
 
         elif char in config_mapeamento.character_global:
-            self.__nota_repetivel = ""
+            self.__nota_repetivel = -1
             return CharacterGlobal(char, self)
         elif char in config_mapeamento.gm_intruments or char.isnumeric():
-            self.__nota_repetivel = ""
+            self.__nota_repetivel = -1
             return CharacterInstrumento(char, self)
 
         elif char in config_mapeamento.character_voz:
-            self.__nota_repetivel = ""
+            self.__nota_repetivel = -1
             return CharacterVoz(char, self)
+        else:
+            if self.__nota_repetivel != -1:
+                return CharacterNota(self.__nota_repetivel, self)
+            else:
+                return CharacterPausa(self.nota, self)
 
     @property
     def texto_track(self):
