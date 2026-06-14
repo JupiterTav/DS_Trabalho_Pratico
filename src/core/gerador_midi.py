@@ -3,11 +3,10 @@ from typing import override
 
 from mido import Message, MidiTrack, MidiFile
 
-from core import config_mapping
-from core.Igerenciador_arquivo import IGerenciador_arquivo
+from core.Igerador_arquivo import IGerador_arquivo
 
 
-class GerenciadorMidi(IGerenciador_arquivo):
+class GeradorMidi(IGerador_arquivo):
 
     def __init__(self):
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)

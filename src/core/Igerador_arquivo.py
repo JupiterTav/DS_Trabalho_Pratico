@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-class IGerenciador_arquivo(ABC):
+
+class IGerador_arquivo(ABC):
     @abstractmethod
     def criar_arquivo(self, caminho: str) -> int:
         pass
@@ -8,5 +9,3 @@ class IGerenciador_arquivo(ABC):
     @abstractmethod
     def salvar_arquivo(self):
         pass
-
-

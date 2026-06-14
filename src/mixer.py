@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 
 from core.conversor import Conversor
-from core.gerenciador_midi import GerenciadorMidi
+from core.gerador_midi import GeradorMidi
 from core.io_manager import IOManager
 from core.voz import Voz
 from ui.campo_texto_editavel import CampoTextoEditavel
@@ -32,15 +32,13 @@ class Mixer:
         self.state = MixerState.EDITING
         print("[MIXER] EDITING")
 
-        self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
+        self.__arq_midi: GeradorMidi = GeradorMidi()
         self.__vozes: list[Voz] = []
 
         self.paused = False
 
     def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None):
         try:
-
-
 
             self.__vozes = []
             for i, campo in enumerate(list_campo):
