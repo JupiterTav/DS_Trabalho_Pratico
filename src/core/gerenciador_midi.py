@@ -1,10 +1,12 @@
 import os
-from typing import  override
-from mido import  MetaMessage, MidiTrack, MidiFile
+from typing import override
 
+from mido import MetaMessage, MidiTrack, MidiFile
+
+from core import config_mapping
 from core.Igerenciador_arquivo import IGerenciador_arquivo
-from core.track import Track
 from core.interpretador_midi import InterpretadorMidi
+from core.track import Track
 
 
 class GerenciadorMidi(IGerenciador_arquivo):
@@ -18,7 +20,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
     @override
     def criar_arquivo(self, caminho: str) -> int:
         try:
-            
+
             self.__caminho = caminho + ".mid"
             if os.path.exists(self.__caminho):
                 os.remove(self.caminho)
@@ -42,26 +44,22 @@ class GerenciadorMidi(IGerenciador_arquivo):
             ultima_nota = ""
             j = 0
             texto = voz.texto_track
-            while j < len(texto):
+            for j, char in enumerate(texto):
                 char = texto[j]
 
                 # Suporte a Bemol (Ex: Eb, Ab)
-                if char in "ABCDEFG" and j + 1 < len(texto) and texto[j+1] == 'b':
+                if char in config_mapping.notas_midi and j + 1 < len(texto) and texto[j + 1] == 'b':
                     char = char + 'b'
                     j += 1
 
-                # 1. Se for uma NOTA
-                if char in self.__evento_midi.notas_midi:
+                elif char in config_mapping.notas_midi:
                     ultima_nota = char
-                    self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
-                # 2. Se for uma PAUSA explícita (a-h minúsculas)
-                elif char in 'abcdefgh':
+                elif char in config_mapping.characteres_pausa:
                     ultima_nota = ""
                     self.__evento_midi.interpretar_char("", channel=i, voz=voz, track=track)
 
-                # 3. Comandos que NÃO são notas (Limpam a memória de repetição)
-                elif char in self.__evento_midi.gm_intruments or char.isnumeric():
+                elif char in config_mapping.gm_intruments or char.isnumeric():
                     ultima_nota = ""
                     self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
@@ -72,11 +70,11 @@ class GerenciadorMidi(IGerenciador_arquivo):
                     voz.oitava -= 1
                     ultima_nota = ""
                 elif char in '>':
-                    self.__evento_midi.bpm_global += 10
+                    config_mapping.bpm_global += 10
                     track.append(self.__evento_midi.atualiza_bpm())
                     ultima_nota = ""
                 elif char in '<':
-                    self.__evento_midi.bpm_global -= 10
+                    config_mapping.bpm_global -= 10
                     track.append(self.__evento_midi.atualiza_bpm())
                     ultima_nota = ""
                 elif char in ' ':
@@ -89,10 +87,9 @@ class GerenciadorMidi(IGerenciador_arquivo):
                     # Se o anterior era nota, REPETE (Trinado)
                     # Se não era nota, PAUSA
                     self.__evento_midi.interpretar_char(ultima_nota, channel=i, voz=voz, track=track)
-                
+
                 j += 1
             track.append(self.__evento_midi.end_of_track())
-
 
     def criaTrack(self, *, track_name: str) -> MidiTrack:
         track = MidiTrack()
@@ -109,7 +106,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
 
     def set_bpm(self, bpm: int):
         self.__evento_midi.bpm_global = bpm
-    
+
     @property
     def caminho(self) -> str:
         if not os.path.exists(self.__caminho):
