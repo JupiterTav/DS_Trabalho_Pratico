@@ -1,0 +1,138 @@
+from enum import Enum
+
+import pygame
+
+from core.conversor import Conversor
+from core.gerenciador_midi import GerenciadorMidi
+from core.io_manager import IOManager
+from core.voz import Voz
+from ui.campo_texto_editavel import CampoTextoEditavel
+
+
+class MixerState(Enum):
+    EDITING = 0
+    GENERATING = 1
+    SYNTHESIZING = 2
+    PLAYING = 3
+    QUIT = 4
+
+
+class Mixer:
+    paused: bool
+
+    def __init__(self) -> None:
+        self.__vozes = None
+        self.__arq_midi = None
+        self.__arq_output = ""
+        self.state = MixerState.EDITING
+        pygame.mixer.init()
+        self.editing()
+
+    def editing(self):
+        self.state = MixerState.EDITING
+        print("[MIXER] EDITING")
+
+        self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
+        self.__vozes: list[Voz] = []
+
+        self.paused = False
+
+    def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None):
+        try:
+
+
+
+            self.__vozes = []
+            for i, campo in enumerate(list_campo):
+                voz = Voz(campo.campo_texto.get(),
+                          int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i)
+                try:
+                    instrumento = int(campo.param_instrumento.get())
+                    voz.instrumento = instrumento
+                except (ValueError, Exception):
+                    voz.instrumento = 0  # Fallback para piano se der erro
+
+                self.__vozes.append(voz)
+
+            self.generate()
+
+            if on_finish:
+                on_finish()
+
+        except Exception as e:
+            print(f"[Mixer] Erro ao inicializar: {e}")
+
+            if on_error:
+                on_error(str(e))
+
+    def generate(self):
+        try:
+            self.state = MixerState.GENERATING
+            print("[MIXER] GENERATING")
+
+            filepath = IOManager.get_output_path()
+
+            self.__arq_output = str(filepath)
+            self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
+
+            for i, voz in enumerate(self.__vozes):
+                atual_track = self.__arq_midi.criaTrack(track_name=f"Track {i}", channel=voz.channel,
+                                                        volume_inicial=voz.volume,
+                                                        instrumento_inicial=voz.instrumento)
+                j = 0
+                while j < len(voz.texto_track):
+                    char = voz.texto_track[j]
+                    if j + 1 < len(voz.texto_track) and char in 'M' and voz.texto_track[j + 1] == 'b':
+                        char = 'Mb'
+                        j += 1
+                    voz.interpretar(char).character_comando(atual_track)
+                    j += 1
+                self.__arq_midi.salvar_arquivo()
+
+            self.__arq_midi.salvar_arquivo()
+
+            self.synth()
+        except ValueError:
+            print(f"[Mixer] Erro ao Gerar o arquivo!\n")
+
+    def synth(self):
+        try:
+            self.state = MixerState.SYNTHESIZING
+            print("[MIXER] SYNTHESIZING")
+
+            conversor = Conversor("assets/TimGM6mb.sf2")
+            _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho,
+                                               output_path=self.__arq_output,
+                                               volume=100)  # Todo: volume configuravel pela interface
+            if _:
+                self.play_track()
+        except ValueError:
+            print(f"[MIXER] Erro ao sintetizar!")
+
+    def play_track(self):
+        self.state = MixerState.PLAYING
+
+        print("[MIXER] PLAYING")
+        try:
+            pygame.mixer.music.load(self.__arq_output)
+
+            pygame.mixer.music.set_volume(0.7)
+            pygame.mixer.music.play(1)
+
+            self.editing()
+        except ValueError:
+            print(f"[Mixer] Erro ao tocar")
+
+    def on_pause(self):
+        if self.paused:
+            pygame.mixer.music.unpause()
+        else:
+            pygame.mixer.music.pause()
+        self.paused = not self.paused
+
+    def on_play(self):
+        if self.paused:
+            pygame.mixer.music.unpause()
+        else:
+            pygame.mixer.music.rewind()
+            pygame.mixer.music.play()

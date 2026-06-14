@@ -1,0 +1,57 @@
+from mido import Message, MetaMessage, bpm2tempo, MidiTrack
+
+from . import config_mapping
+from .track import Track as Voz
+
+
+class InterpretadorMidi:
+
+    def interpretar_char(self, char: str, *, channel: int, voz: Voz, track: MidiTrack):
+        print("INTERPRETANDO")
+        if char in config_mapping.notas_midi:
+            voz.nota = config_mapping.notas_midi[char]
+
+            track.append(self._liga_nota(channel=channel, nota=voz.nota, time=voz.delay))
+            track.append(self._desliga_nota(channel=channel, nota=voz.nota))
+
+        elif char in config_mapping.gm_intruments:
+            voz.instrumento = config_mapping.gm_intruments[char]
+            track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
+
+        elif char.isnumeric():
+            numero = int(char)
+            if (numero % 2) == 0:
+                voz.instrumento += numero
+                track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
+            else:
+                voz.instrumento = 14  # Tubular Bells ou similar fixo
+                track.append(self.troca_instrumento(channel=channel, instrumento=voz.instrumento))
+
+        else:
+            track.append(self._desliga_nota(channel=channel, nota=voz.nota))
+
+    def is_interpretavel(self, char: str) -> bool:
+        if (char in config_mapping.notas_midi or
+                char in config_mapping.gm_intruments or
+                char in config_mapping.characteres_pausa or
+                char.isnumeric()):
+            return True
+        return False
+
+    def _liga_nota(self, *, channel: int, nota: int, time: int) -> Message:
+        return Message('note_on', channel=channel, note=nota, velocity=100, time=time * config_mapping.TICKS_PER_BEAT)
+
+    def _desliga_nota(self, *, channel: int, nota: int) -> Message:
+        return Message('note_off', channel=channel, note=nota, velocity=0, time=config_mapping.TICKS_PER_BEAT)
+
+    def troca_instrumento(self, *, channel: int, instrumento: int) -> Message:
+        return Message('program_change', channel=channel, program=instrumento)
+
+    def define_volume(self, *, channel: int, volume: int) -> Message:
+        return Message('control_change', channel=channel, control=7, value=volume)
+
+    def atualiza_bpm(self) -> MetaMessage:
+        return MetaMessage('set_tempo', tempo=bpm2tempo(config_mapping.bpm_global), time=0)
+
+    def end_of_track(self) -> MetaMessage:
+        return MetaMessage('end_of_track', time=0)
