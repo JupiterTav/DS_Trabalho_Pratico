@@ -1,4 +1,3 @@
-import pathlib
 from enum import Enum
 
 import pygame
@@ -42,7 +41,6 @@ class Mixer:
 
     def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None):
         try:
-            filepath = IOManager.get_output_path()
 
             self.__vozes = []  # Limpa as vozes anteriores
             for i, campo in enumerate(list_campo):
@@ -58,7 +56,7 @@ class Mixer:
 
                 self.__vozes.append(voz)
 
-            self.generate(filepath)
+            self.generate()
 
             if on_finish:
                 on_finish()
@@ -68,10 +66,12 @@ class Mixer:
             if on_error:
                 on_error(str(e))
 
-    def generate(self, filepath: pathlib.Path):
+    def generate(self):
         try:
             self.state = MixerState.GENERATING
             print("[MIXER] GENERATING")
+
+            filepath = IOManager.get_output_path()
 
             self.__arq_output = str(filepath)
             self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
