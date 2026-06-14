@@ -1,3 +1,5 @@
+from typing import override
+
 from core import config_mapeamento
 from core.characteres.Icharacter import ICharacter
 from core.characteres.character_global import CharacterGlobal
@@ -35,6 +37,7 @@ class Voz(Interpretador):
                 char = 'Mb'
 
     ## @param char Character a ser interpretado
+    @override
     def interpretar(self, char: str) -> ICharacter:
         """Interpretar Doc: Retorna o tipo de caractere correto para cada mapeamento"""
         super().interpretar(char)
