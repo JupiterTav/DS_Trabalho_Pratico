@@ -9,6 +9,9 @@ from core.interpretador import Interpretador
 
 
 class Voz(Interpretador):
+    """Classe Voz
+        Interpretador que representa seu texto e parametros tocados numa nota
+    """
     __VOLUME_MAXIMO = 127
 
     def __init__(self, texto_track: str, volume: int, oitava: int, channel: int):
@@ -17,8 +20,10 @@ class Voz(Interpretador):
 
         self.__volume = volume
         self.__oitava = oitava
+
         self.__instrumento = 0
         self.__oitava_padrao = oitava
+
         self.channel = channel
 
         self.__delay = self.calcula_delay(texto_track)
@@ -29,7 +34,9 @@ class Voz(Interpretador):
             if i + 1 < len(texto_track) and char in 'M' and texto_track[i + 1] == 'b':
                 char = 'Mb'
 
+    ## @param char Character a ser interpretado
     def interpretar(self, char: str) -> ICharacter:
+        """Interpretar Doc: Retorna o tipo de caractere correto para cada mapeamento"""
         super().interpretar(char)
 
         if char in config_mapeamento.notas_midi:

@@ -12,6 +12,7 @@ ctk.set_default_color_theme("blue")
 
 
 class JanelaPrincipal(ctk.CTk):
+    """Janela principal da aplicação. Nela é gerada as componentes da UI e a comunicação com mixer"""
 
     def __init__(self, mixer: Mixer):
         super().__init__()
@@ -28,8 +29,8 @@ class JanelaPrincipal(ctk.CTk):
         self.cabecalho = Cabecalho(self, self.campo_principal)
         self.cabecalho.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-        # Função de callback (Mediador) que coordena a ação sem acoplar os componentes
         def ao_clicar_mix(on_finish, on_error):
+            """  Função de callback (Mediador) que coordena a ação sem acoplar os componentes"""
             config_mapeamento.bpm_global = self.cabecalho.get_bpm()
             lista_campos = self.campo_principal.campos
 

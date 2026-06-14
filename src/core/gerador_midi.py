@@ -7,6 +7,7 @@ from core.Igerador_arquivo import IGerador_arquivo
 
 
 class GeradorMidi(IGerador_arquivo):
+    """Comanda métodos para criar um arquivo midi"""
 
     def __init__(self):
         self.__arq_midi = MidiFile(type=1, ticks_per_beat=480)
@@ -28,6 +29,9 @@ class GeradorMidi(IGerador_arquivo):
         return 0
 
     def criaTrack(self, *, track_name: str, channel, volume_inicial, instrumento_inicial) -> MidiTrack:
+        """Cria Track Doc: Anexa ao arquivo e retorna uma Midi Track
+        com volume e intrumento inicial como eventos default
+        """
         track = MidiTrack()
         self.__arq_midi.tracks.append(track)
         track.name = track_name

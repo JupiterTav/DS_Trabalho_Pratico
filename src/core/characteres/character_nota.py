@@ -7,6 +7,8 @@ from .Icharacter import ICharacter
 
 
 class CharacterNota(ICharacter):
+    """Tipo de caracter que toca uma nota (e desliga a respectiva nota)"""
+
     def __init__(self, nota, voz):
         super().__init__(nota, voz)
         self.voz = voz

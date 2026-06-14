@@ -14,10 +14,16 @@ class MixerState(Enum):
     GENERATING = 1
     SYNTHESIZING = 2
     PLAYING = 3
-    QUIT = 4
 
 
 class Mixer:
+    """Responsaavel pelo pipeline do arquivo de som e "mediador" dos módulos de core e UI.
+        Dividimos o pipeline em:
+            EDITING -> Escrevendo o texto nos campos da UI;
+            GENERATING -> Gera o arquivo midi a partir das vozes e dados extraidos dos campos;
+            SYNTHESIZING -> Sintetiza o output de generating em um arquivo de som;
+            PLAYING -> Toca o arquivo de som (output de synthesizing).
+    """
     paused: bool
 
     def __init__(self) -> None:

@@ -4,6 +4,8 @@ from .Icharacter import ICharacter
 
 
 class CharacterVoz(ICharacter):
+    """Tipo de character que um parametro na voz"""
+
     def __init__(self, char, voz):
         super().__init__(char, voz)
         self.voz = voz

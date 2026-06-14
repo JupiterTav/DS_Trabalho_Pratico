@@ -7,6 +7,8 @@ from .Icharacter import ICharacter
 
 
 class CharacterInstrumento(ICharacter):
+    """Tipo de instrumento que altera o instrumento sendo tocado pela voz"""
+
     def __init__(self, char, voz):
         super().__init__(char, voz)
 

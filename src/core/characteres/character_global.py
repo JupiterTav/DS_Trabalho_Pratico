@@ -7,6 +7,8 @@ from .Icharacter import ICharacter
 
 
 class CharacterGlobal(ICharacter):
+    """Tipo de character que muda algum parametro global"""
+
     def __init__(self, char, voz):
         super().__init__(char, voz)
         self.variacao_bpm = 10

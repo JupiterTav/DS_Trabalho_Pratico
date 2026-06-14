@@ -7,6 +7,8 @@ from .Icharacter import ICharacter
 
 
 class CharacterPausa(ICharacter):
+    """Tipo de character que representa uma pausa"""
+
     def __init__(self, nota, voz):
         super().__init__(nota, voz)
         self.voz = voz
