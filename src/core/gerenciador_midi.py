@@ -1,9 +1,8 @@
 import os
 from typing import  override
-from mido import  MetaMessage, MidiTrack, MidiFile
+from mido import  Message, MetaMessage, MidiTrack, MidiFile
 
 from core.Igerenciador_arquivo import IGerenciador_arquivo
-from core.voz import Voz
 from core.interpretador_midi import InterpretadorMidi
 
 
@@ -30,33 +29,13 @@ class GerenciadorMidi(IGerenciador_arquivo):
 
         return 0
 
-    @override
-    def processar_arquivo(self, vozes: list[Voz]):
-        for i, voz in enumerate(vozes):
-            track = self.criaTrack(track_name=f'voz {i}')
-
-            track.append(MetaMessage('text', text=f'Melodia da voz {i}', time=0))
-            track.append(self.__evento_midi.define_volume(channel=voz.channel, volume=voz.volume))
-            track.append(self.__evento_midi.troca_instrumento(channel=voz.channel, instrumento=voz.instrumento))
-            track.append(self.__evento_midi.atualiza_bpm())
-#            ultima_nota = ""
-            j = 0
-            texto = voz.texto_track
-            while j < len(texto):
-                print("interpretando character ", j)
-                voz.characteres[j].character_comando(track)
-                print("instrumento ", voz.instrumento)
-                print("oitava", voz.oitava)
-                print("foi interpretado character ", j)
-                j += 1
-
-            #track.append(self.__evento_midi.end_of_track())
-
-
-    def criaTrack(self, *, track_name: str) -> MidiTrack:
+    def criaTrack(self, *, track_name: str, channel, volume_inicial, instrumento_inicial) -> MidiTrack:
         track = MidiTrack()
         self.__arq_midi.tracks.append(track)
         track.name = track_name
+
+        track.append(Message('control_change', channel=channel, control=7, value=volume_inicial))
+        track.append(Message('program_change', channel=channel, program=instrumento_inicial))
 
         self.__arq_midi.save(self.__caminho)
 
