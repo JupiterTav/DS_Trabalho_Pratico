@@ -14,7 +14,7 @@
 
 ### Dependências: 
 
-    pip install mido pygame customtkinter fluidsynth
+    pip install -r requirements.txt
 
 ## How to Run
     python src/main.py
