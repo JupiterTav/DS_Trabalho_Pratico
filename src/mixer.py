@@ -1,7 +1,6 @@
 import pathlib
 
 import pygame
-import pygame.midi
 
 from enum import Enum
 
@@ -24,22 +23,12 @@ class Mixer:
     def __init__(self) -> None:
         self.__vozes = None
         self.__arq_midi = None
-        self.__arq_output = None
+        self.__arq_output = ""
         self.state = MixerState.EDITING
         pygame.mixer.init()
-        pygame.midi.init()
-        self.output = pygame.midi.get_default_output_id()
-        if self.output == -1:
-            for i in range(pygame.midi.get_count()):
-                interf, name, is_input, is_output, opened = pygame.midi.get_device_info(i)
-                if is_output:
-                    self.output = i
-                    print(f"Found alternative output device {i}: {name.decode()}")
-                    break
-        print(self.output)
 
-        self.editing()
         self.loaded = False
+        self.editing()
 
 
     def editing(self):
@@ -48,7 +37,6 @@ class Mixer:
 
         self.__arq_midi: GerenciadorMidi = GerenciadorMidi()
         self.__vozes: list[Voz] = []
-        self.__arq_output: str = ""
 
         self.paused = False
 
@@ -62,7 +50,7 @@ class Mixer:
             self.__vozes = [] # Limpa as vozes anteriores
             for i, campo in enumerate(list_campo):
                 voz = Voz(campo.campo_texto.get(),
-                          int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i, output=self.output)
+                        int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i)
                 
                 # Lê o instrumento da interface e define na trilha
                 try:
@@ -79,7 +67,7 @@ class Mixer:
                 on_finish()
                 
         except Exception as e:
-            print(f"[Mixer] Erro ao inicializar: {e.__traceback__}")
+            print(f"[Mixer] Erro ao inicializar: {e}")
             if on_error:
                 on_error(str(e))
 
@@ -119,8 +107,8 @@ class Mixer:
             pygame.mixer.music.load(self.__arq_output)
             self.loaded = True
 
-            pygame.mixer.music.play(1)
             pygame.mixer.music.set_volume(0.7)
+            pygame.mixer.music.play(1)
 
             self.editing()
         except ValueError:

@@ -1,20 +1,17 @@
 from typing import override
-from mido import Message
-import pygame.midi
 
+from mido import Message, MidiTrack
+
+from core import config_mapeamento
 from core.Icharacter import ICharacter
 
 
 class CharacterNota(ICharacter):
-    def __init__(self, nota, output: pygame.midi.Output, voz):
-        super().__init__(nota, output, voz)
+    def __init__(self, nota, voz):
+        super().__init__(nota, voz)
         self.voz = voz
 
-    def character_comando(self) -> None:
-        super().character_comando()
-        self.output.note_on(self.nota, velocity=self.voz.volume, channel=self.voz.channel)
-
-    def character_comando_midi(self) -> Message:
-        super().character_comando_midi()
-        return Message("note_on", note=self.nota,
-                       channel=self.voz.channel, velocity=self.voz.volume, time=self.voz.delay*480)
+    @override
+    def character_comando(self, track: MidiTrack) ->  None:
+        track.append(Message("note_on", note=self.nota, channel=self.voz.channel, velocity=self.voz.volume, time=self.voz.delay*config_mapeamento.PPQ))
+        track.append(Message("note_off", note=self.nota, channel=self.voz.channel, velocity=0, time=480))

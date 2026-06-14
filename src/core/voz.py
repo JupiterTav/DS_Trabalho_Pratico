@@ -11,7 +11,7 @@ from core.interpretador import Interpretador
 class Voz(Interpretador):
     __VOLUME_MAXIMO = 127
 
-    def __init__(self, texto_track: str, volume: int, oitava: int, channel: int, output: pygame.midi.Output):
+    def __init__(self, texto_track: str, volume: int, oitava: int, channel: int):
         super().__init__()
         self.__texto_track = texto_track
 
@@ -23,26 +23,34 @@ class Voz(Interpretador):
 
         self.__delay = self.calcula_delay(texto_track)
         self.__nota = 0
+        self.__nota_repetivel = ""
 
-        self.output = output
 
         for char in texto_track:
             self.interpretar(char)
-        print(self.characteres)
+        print(len(self.characteres))
+
 
 
     def interpretar(self, char: str) -> None:
         super().interpretar(char)
+
         if char in config_mapeamento.notas_midi:
-            self.characteres.append(CharacterNota(config_mapeamento.notas_midi[char], self.output, self))
+            self.nota = config_mapeamento.notas_midi[char]
+            self.characteres.append(CharacterNota(self.nota, self))
+            self.__nota_repetivel = char
         elif char in config_mapeamento.character_pausa:
-            self.characteres.append(CharacterPausa(char, self.output, self))
+            self.__nota_repetivel = ""
+            self.characteres.append(CharacterPausa(char, self))
         elif char in config_mapeamento.character_global:
-            self.characteres.append(CharacterGlobal(char, self.output, self))
+            self.__nota_repetivel = ""
+            self.characteres.append(CharacterGlobal(char, self))
         if char in config_mapeamento.gm_intruments or char.isnumeric():
-            self.characteres.append(CharacterInstrumento(self.instrumento, self.output, self))
+            self.__nota_repetivel = ""
+            self.characteres.append(CharacterInstrumento(char, self))
         elif char in config_mapeamento.character_voz:
-            self.characteres.append(CharacterVoz(char, self, self.output))
+            self.__nota_repetivel = ""
+            self.characteres.append(CharacterVoz(char, self))
 
     @property
     def texto_track(self):

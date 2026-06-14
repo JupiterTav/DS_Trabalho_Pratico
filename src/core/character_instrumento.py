@@ -1,17 +1,21 @@
-import pygame.midi
-from mido import Message
+from typing import override
 
+from mido import Message, MidiTrack
+
+from core import config_mapeamento
 from core.Icharacter import ICharacter
 
 class CharacterInstrumento(ICharacter):
-    def __init__(self, char, output: pygame.midi.Output, voz):
-        super().__init__(char, output, voz)
+    def __init__(self, char, voz):
+        super().__init__(char, voz)
 
-    def character_comando(self):
-        super().character_comando()
-        self.output.set_instrument(instrument_id=self.voz.instrumento, channel=self.voz.channel)
+    @override
+    def character_comando(self, track: MidiTrack) -> None:
+        if self.nota in config_mapeamento.gm_intruments:
+            self.voz.instrumento = config_mapeamento.gm_intruments[self.nota]
+        elif self.nota.isnumeric():
+            valor = int(self.nota)
+            self.voz.instrumento = self.voz.instrumento + valor if valor % 2 == 0 else 1
+        track.append(Message("program_change", channel=self.voz.channel, program=self.voz.instrumento))
 
-
-    def character_comando_midi(self) -> Message:
-        super().character_comando_midi()
-        return Message("program_change", channel=self.voz.channel, program=self.voz.instrumento)
+        return None

@@ -1,3 +1,4 @@
+PPQ: int = 480
 bpm_global: int = 120
 
 notas_midi: dict[str, int] = {

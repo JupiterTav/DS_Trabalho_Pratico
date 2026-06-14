@@ -12,7 +12,7 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.__ciclo_valores_iniciais: int = 0
         self.__oitavas_padrao = ["6", "5", "4", "3"]
         self.__volumes_padrao = ["100", "80", "60", "40"]
-        self.__instrumentos_padrao = ["6", "20", "0", "70"]
+        self.__instrumentos_padrao = ["0", "20", "0", "71"]
 
         self.campos: list[CampoTextoEditavel] = []
         self.adiciona_campo()
