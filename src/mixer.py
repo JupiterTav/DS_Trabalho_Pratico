@@ -1,14 +1,14 @@
 import pathlib
+from enum import Enum
 
 import pygame
 
-from enum import Enum
-
-from core.io_manager import IOManager
 from core.conversor import Conversor
 from core.gerenciador_midi import GerenciadorMidi
+from core.io_manager import IOManager
 from core.voz import Voz
 from ui.campo_texto_editavel import CampoTextoEditavel
+
 
 class MixerState(Enum):
     EDITING = 0
@@ -16,6 +16,7 @@ class MixerState(Enum):
     SYNTHESIZING = 2
     PLAYING = 3
     QUIT = 4
+
 
 class Mixer:
     paused: bool
@@ -30,7 +31,6 @@ class Mixer:
         self.loaded = False
         self.editing()
 
-
     def editing(self):
         self.state = MixerState.EDITING
         print("[MIXER] EDITING")
@@ -40,32 +40,29 @@ class Mixer:
 
         self.paused = False
 
-    def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None, bpm_inicial=120):
+    def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None):
         try:
             filepath = IOManager.get_output_path()
 
-            # Configura o BPM inicial no gerador
-            self.__arq_midi.set_bpm(bpm_inicial)
-
-            self.__vozes = [] # Limpa as vozes anteriores
+            self.__vozes = []  # Limpa as vozes anteriores
             for i, campo in enumerate(list_campo):
                 voz = Voz(campo.campo_texto.get(),
-                        int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i)
-                
+                          int(campo.param_volume.get()), int((campo.param_oitava.get())), channel=i)
+
                 # Lê o instrumento da interface e define na trilha
                 try:
                     instrumento = int(campo.param_instrumento.get())
                     voz.instrumento = instrumento
                 except (ValueError, Exception):
-                    voz.instrumento = 0 # Fallback para piano se der erro
+                    voz.instrumento = 0  # Fallback para piano se der erro
 
                 self.__vozes.append(voz)
 
             self.generate(filepath)
-            
+
             if on_finish:
                 on_finish()
-                
+
         except Exception as e:
             print(f"[Mixer] Erro ao inicializar: {e}")
             if on_error:
@@ -78,10 +75,11 @@ class Mixer:
 
             self.__arq_output = str(filepath)
             self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
-            
-            for i,voz in enumerate(self.__vozes):
-                atual_track = self.__arq_midi.criaTrack(track_name=f"Track {i}", channel=voz.channel, volume_inicial=voz.volume, 
-                                                                                             instrumento_inicial=voz.instrumento)
+
+            for i, voz in enumerate(self.__vozes):
+                atual_track = self.__arq_midi.criaTrack(track_name=f"Track {i}", channel=voz.channel,
+                                                        volume_inicial=voz.volume,
+                                                        instrumento_inicial=voz.instrumento)
                 for char in voz.characteres:
                     char.character_comando(atual_track)
                 self.__arq_midi.salvar_arquivo()
@@ -93,13 +91,13 @@ class Mixer:
             print(f"[Mixer] Erro ao Gerar o arquivo!\n")
 
     def synth(self):
-        try: 
+        try:
             self.state = MixerState.SYNTHESIZING
             print("[MIXER] SYNTHESIZING")
 
             conversor = Conversor("assets/TimGM6mb.sf2")
-            _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho, 
-                                           output_path=self.__arq_output, volume=100)
+            _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho,
+                                               output_path=self.__arq_output, volume=100)
             if _:
                 self.play_track()
         except ValueError:
@@ -127,6 +125,7 @@ class Mixer:
             else:
                 pygame.mixer.music.pause()
             self.paused = not self.paused
+
     def on_play(self):
         if self.loaded:
             if self.paused:

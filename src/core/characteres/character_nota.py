@@ -3,7 +3,7 @@ from typing import override
 from mido import Message, MidiTrack
 
 from core import config_mapeamento
-from core.Icharacter import ICharacter
+from .Icharacter import ICharacter
 
 
 class CharacterNota(ICharacter):
@@ -12,6 +12,7 @@ class CharacterNota(ICharacter):
         self.voz = voz
 
     @override
-    def character_comando(self, track: MidiTrack) ->  None:
-        track.append(Message("note_on", note=self.nota, channel=self.voz.channel, velocity=self.voz.volume, time=self.voz.delay*config_mapeamento.PPQ))
+    def character_comando(self, track: MidiTrack) -> None:
+        track.append(Message("note_on", note=self.nota, channel=self.voz.channel, velocity=self.voz.volume,
+                             time=self.voz.delay * config_mapeamento.PPQ))
         track.append(Message("note_off", note=self.nota, channel=self.voz.channel, velocity=0, time=480))

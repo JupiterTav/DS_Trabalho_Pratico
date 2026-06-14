@@ -3,7 +3,8 @@ from typing import override
 from mido import Message, MidiTrack
 
 from core import config_mapeamento
-from core.Icharacter import ICharacter
+from .Icharacter import ICharacter
+
 
 class CharacterInstrumento(ICharacter):
     def __init__(self, char, voz):

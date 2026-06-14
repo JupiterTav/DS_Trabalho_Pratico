@@ -1,12 +1,11 @@
-import pygame
-
 from core import config_mapeamento
-from core.character_global import CharacterGlobal
-from core.character_instrumento import CharacterInstrumento
-from core.character_nota import CharacterNota
-from core.character_pausa import CharacterPausa
-from core.character_voz import CharacterVoz
+from core.characteres.character_global import CharacterGlobal
+from core.characteres.character_instrumento import CharacterInstrumento
+from core.characteres.character_nota import CharacterNota
+from core.characteres.character_pausa import CharacterPausa
+from core.characteres.character_voz import CharacterVoz
 from core.interpretador import Interpretador
+
 
 class Voz(Interpretador):
     __VOLUME_MAXIMO = 127
@@ -25,12 +24,10 @@ class Voz(Interpretador):
         self.__nota = 0
         self.__nota_repetivel = ""
 
-
-        for char in texto_track:
+        for i, char in enumerate(texto_track):
+            if i + 1 < len(texto_track) and char in 'M' and texto_track[i + 1] == 'b':
+                char = 'Mb'
             self.interpretar(char)
-        print(len(self.characteres))
-
-
 
     def interpretar(self, char: str) -> None:
         super().interpretar(char)
@@ -39,15 +36,19 @@ class Voz(Interpretador):
             self.nota = config_mapeamento.notas_midi[char]
             self.characteres.append(CharacterNota(self.nota, self))
             self.__nota_repetivel = char
+
         elif char in config_mapeamento.character_pausa:
             self.__nota_repetivel = ""
             self.characteres.append(CharacterPausa(char, self))
+
         elif char in config_mapeamento.character_global:
             self.__nota_repetivel = ""
             self.characteres.append(CharacterGlobal(char, self))
-        if char in config_mapeamento.gm_intruments or char.isnumeric():
+
+        elif char in config_mapeamento.gm_intruments or char.isnumeric():
             self.__nota_repetivel = ""
             self.characteres.append(CharacterInstrumento(char, self))
+
         elif char in config_mapeamento.character_voz:
             self.__nota_repetivel = ""
             self.characteres.append(CharacterVoz(char, self))
@@ -91,7 +92,7 @@ class Voz(Interpretador):
 
     def calcula_delay(self, texto_track: str) -> int:
         if '[' and ']' in texto_track and texto_track[0] == '[':
-            inicio = texto_track.index(']')+1
+            inicio = texto_track.index(']') + 1
             self.__texto_track = texto_track[inicio:]
             return int(texto_track[1:texto_track.index(']')])
         return 0
@@ -101,11 +102,12 @@ class Voz(Interpretador):
         return self.__instrumento
 
     @instrumento.setter
-    def instrumento(self, value: int ):
+    def instrumento(self, value: int):
         if value >= 0 and value <= 127:
             self.__instrumento = value
         else:
             raise Exception(f"não há intrumento general midi {value}")
+
     @property
     def nota(self):
         return self.__nota

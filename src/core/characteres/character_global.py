@@ -1,9 +1,9 @@
-from typing import overload, override
+from typing import override
 
 from mido import MetaMessage, MidiTrack, bpm2tempo
 
 from core import config_mapeamento
-from core.Icharacter import ICharacter
+from .Icharacter import ICharacter
 
 
 class CharacterGlobal(ICharacter):

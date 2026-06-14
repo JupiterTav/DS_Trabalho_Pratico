@@ -43,9 +43,6 @@ class GerenciadorMidi(IGerenciador_arquivo):
     def salvar_arquivo(self):
         self.__arq_midi.save(filename=self.__caminho)
 
-    def set_bpm(self, bpm: int):
-        self.__evento_midi.bpm_global = bpm
-
     @property
     def caminho(self) -> str:
         if not os.path.exists(self.__caminho):

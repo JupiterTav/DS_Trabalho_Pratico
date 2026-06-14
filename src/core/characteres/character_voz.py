@@ -1,8 +1,8 @@
-
 from mido import MidiTrack
 
 from core import config_mapeamento
-from core.Icharacter import ICharacter
+from .Icharacter import ICharacter
+
 
 class CharacterVoz(ICharacter):
     def __init__(self, char, voz):
