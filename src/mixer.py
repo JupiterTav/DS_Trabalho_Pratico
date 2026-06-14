@@ -39,7 +39,7 @@ class Mixer:
 
         self.paused = False
 
-    def start(self, list_campo: list[CampoTextoEditavel], bpm_inicial=120):
+    def start(self, list_campo: list[CampoTextoEditavel], on_finish=None, on_error=None, bpm_inicial=120):
         try:
             filepath = IOManager.get_output_path()
 
@@ -61,15 +61,14 @@ class Mixer:
                 self.__vozes.append(voz)
 
             self.generate(filepath)
-
-        #        if on_finish:
-        #            on_finish()
+            if on_finish:
+                on_finish()
 
         except Exception as e:
             print(f"[Mixer] Erro ao inicializar: {e}")
 
-    #       if on_error:
-    #           on_error(str(e))
+            if on_error:
+                on_error(str(e))
 
     def generate(self, filepath: pathlib.Path):
         try:

@@ -32,13 +32,7 @@ class JanelaPrincipal(ctk.CTk):
             bpm_inicial = self.cabecalho.get_bpm()
             lista_campos = self.campo_principal.campos
 
-            # Encapsula a finalização para garantir que o play_track seja chamado
-            # def finalizacao_com_play():
-            #    on_finish()
-
-            # mixer.play_track()
-
-            mixer.start(lista_campos, bpm_inicial=bpm_inicial)
+            mixer.start(lista_campos, on_error=on_error, bpm_inicial=bpm_inicial)
 
         self.mix_botao = MixBotao(self, action_callback=ao_clicar_mix)
         self.mix_botao.grid(row=1, column=0, sticky="nsew")

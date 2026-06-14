@@ -44,7 +44,7 @@ class GerenciadorMidi(IGerenciador_arquivo):
             ultima_nota = ""
             j = 0
             texto = voz.texto_track
-            for j, char in enumerate(texto):
+            while j < len(texto):
                 char = texto[j]
 
                 # Suporte a Bemol (Ex: Eb, Ab)
@@ -52,12 +52,13 @@ class GerenciadorMidi(IGerenciador_arquivo):
                     char = char + 'b'
                     j += 1
 
-                elif char in config_mapping.notas_midi:
+                if char in config_mapping.notas_midi:
                     ultima_nota = char
+                    self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
                 elif char in config_mapping.characteres_pausa:
                     ultima_nota = ""
-                    self.__evento_midi.interpretar_char("", channel=i, voz=voz, track=track)
+                    self.__evento_midi.interpretar_char(char, channel=i, voz=voz, track=track)
 
                 elif char in config_mapping.gm_intruments or char.isnumeric():
                     ultima_nota = ""

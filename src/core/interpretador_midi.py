@@ -33,7 +33,7 @@ class InterpretadorMidi:
     def is_interpretavel(self, char: str) -> bool:
         if (char in config_mapping.notas_midi or
                 char in config_mapping.gm_intruments or
-                char in 'abcdefgh' or
+                char in config_mapping.characteres_pausa or
                 char.isnumeric()):
             return True
         return False
