@@ -23,7 +23,7 @@ class JanelaPrincipal(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
-        self.campo_principal = ScrollableCampoTexto(self)
+        self.campo_principal = ScrollableCampoTexto(self, border_width=2, corner_radius=0)
         self.campo_principal.grid(row=2, column=0, sticky="nsew")
 
         self.cabecalho = Cabecalho(self, self.campo_principal)
@@ -41,8 +41,8 @@ class JanelaPrincipal(ctk.CTk):
 
             mixer.start(lista_campos, on_finish=finalizacao_com_play, on_error=on_error)
 
-        self.mix_botao = MixBotao(self, action_callback=ao_clicar_mix)
-        self.mix_botao.grid(row=1, column=0, sticky="nsew")
+        self.mix_botao = MixBotao(self, action_callback=ao_clicar_mix, height=100)
+        self.mix_botao.grid(row=1, column=0, sticky="ew")
 
-        self.icons_reproducao = Reproducao(self, mixer)
-        self.icons_reproducao.grid(row=3, column=0, sticky="nsew", columnspan=3)
+        self.icons_reproducao = Reproducao(self, mixer, border_width=0, corner_radius=0)
+        self.icons_reproducao.grid(row=3, column=0, sticky="sew", columnspan=3)
