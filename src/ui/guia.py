@@ -7,14 +7,12 @@ class Guia(ctk.CTkToplevel):
     def __init__(self):
         super().__init__()
 
-        self.title("Tabela Musical")
+        self.title("Guia de documentação")
         self.geometry("600x800")
 
-        # Frame principal
         main_frame = ctk.CTkFrame(self, corner_radius=20)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Cabeçalho
         header = ctk.CTkFrame(main_frame)
         header.pack(fill="x")
 
