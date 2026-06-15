@@ -4,6 +4,7 @@ from core import config_mapeamento
 from mixer import Mixer
 from ui.reproducao import Reproducao
 from .cabecalho import Cabecalho
+from .guia import Guia
 from .mixing_button import MixBotao
 from .scrollable_campo_texto import ScrollableCampoTexto
 
@@ -19,6 +20,7 @@ class JanelaPrincipal(ctk.CTk):
 
         self.title("Sintetizador de texto")
         self.geometry("1024x768")
+        self.toplevel_guia = None
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
@@ -46,3 +48,13 @@ class JanelaPrincipal(ctk.CTk):
 
         self.icons_reproducao = Reproducao(self, mixer, border_width=0, corner_radius=0)
         self.icons_reproducao.grid(row=3, column=0, sticky="sew", columnspan=3)
+
+        def abre_guia():
+            if self.toplevel_guia is None or not self.toplevel_guia.winfo_exists():
+                self.toplevel_guia = Guia()
+            else:
+                self.toplevel_guia.focus()
+
+        self.botao_guia = ctk.CTkButton(self.mix_botao, width=25, height=30, text="📘︎", fg_color="transparent",
+                                        font=("Arial", 35), command=abre_guia)
+        self.botao_guia.grid(row=0, column=0, sticky="w")

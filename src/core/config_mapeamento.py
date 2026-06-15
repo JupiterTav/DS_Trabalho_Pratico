@@ -11,6 +11,7 @@ notas_midi: dict[str, int] = {
     'G': 19,  # Sol (G0 = MIDI 19)
     'H': 22,  # Si Bemol (Bb0 = MIDI 22)
     'Eb': 15,  # Mi Bemol
+    'Mb': 15,
     'Ab': 20,  # La Bemol
     'Bb': 22,  # Si Bemol
     'Db': 13,  # Re Bemol
