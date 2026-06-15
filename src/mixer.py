@@ -86,10 +86,10 @@ class Mixer:
                 j = 0
                 while j < len(voz.texto_track):
                     char = voz.texto_track[j]
-                    if j + 1 < len(voz.texto_track) and char in 'M' and voz.texto_track[j + 1] == 'b':
-                        char = 'Mb'
+                    if j + 1 < len(voz.texto_track) and char in 'ABCDEFG' and voz.texto_track[j + 1] == 'b':
+                        char = char + 'b'
                         j += 1
-                    voz.interpretar(char).charactere_comando(atual_track)
+                    voz.interpretar(char).character_comando(atual_track)
                     j += 1
                 self.__arq_midi.salvar_arquivo()
 

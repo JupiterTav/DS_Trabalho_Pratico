@@ -1,4 +1,4 @@
-from mido import MidiTrack
+from mido import MidiTrack, Message
 
 from .Icharacter import ICharacter
 
@@ -17,4 +17,5 @@ class CharacterVoz(ICharacter):
             self.voz.oitava -= 1
         elif self.nota in ' ':
             self.voz.volume *= 2
+            track.append(Message('control_change', channel=self.voz.channel, control=7, value=self.voz.volume))
         return None

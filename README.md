@@ -1,4 +1,6 @@
-# DS_Trabalho_Pratico
+# Gerador de música
+
+![panel](./docs/panel_ui.png)
 
 ## Setup
 
