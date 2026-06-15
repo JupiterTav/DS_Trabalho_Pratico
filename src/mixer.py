@@ -80,16 +80,16 @@ class Mixer:
             self.__arq_midi.criar_arquivo(str(filepath.with_suffix('')))
 
             for i, voz in enumerate(self.__vozes):
-                atual_track = self.__arq_midi.criaTrack(track_name=f"Track {i}", channel=voz.channel,
-                                                        volume_inicial=voz.volume,
-                                                        instrumento_inicial=voz.instrumento)
+                atual_track = self.__arq_midi.cria_track(track_name=f"Track {i}", channel=voz.channel,
+                                                         volume_inicial=voz.volume,
+                                                         instrumento_inicial=voz.instrumento)
                 j = 0
                 while j < len(voz.texto_track):
                     char = voz.texto_track[j]
                     if j + 1 < len(voz.texto_track) and char in 'M' and voz.texto_track[j + 1] == 'b':
                         char = 'Mb'
                         j += 1
-                    voz.interpretar(char).character_comando(atual_track)
+                    voz.interpretar(char).charactere_comando(atual_track)
                     j += 1
                 self.__arq_midi.salvar_arquivo()
 

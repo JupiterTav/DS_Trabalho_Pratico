@@ -28,7 +28,7 @@ class GeradorMidi(IGerador_arquivo):
 
         return 0
 
-    def criaTrack(self, *, track_name: str, channel, volume_inicial, instrumento_inicial) -> MidiTrack:
+    def cria_track(self, *, track_name: str, channel, volume_inicial, instrumento_inicial) -> MidiTrack:
         """Cria Track Doc: Anexa ao arquivo e retorna uma Midi Track
         com volume e intrumento inicial como eventos default
         """

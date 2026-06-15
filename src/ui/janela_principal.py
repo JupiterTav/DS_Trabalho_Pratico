@@ -18,7 +18,7 @@ class JanelaPrincipal(ctk.CTk):
         super().__init__()
 
         self.title("Sintetizador de texto")
-        self.geometry("640x400")
+        self.geometry("1024x768")
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
