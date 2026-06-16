@@ -104,7 +104,10 @@ class Mixer:
             self.state = MixerState.SYNTHESIZING
             print("[MIXER] SYNTHESIZING")
 
-            conversor = Conversor("assets/TimGM6mb.sf2")
+            import pathlib
+            base_dir = pathlib.Path(__file__).parent.parent.resolve()
+            sf2_path = base_dir / "assets" / "TimGM6mb.sf2"
+            conversor = Conversor(str(sf2_path))
             _ = conversor.converter_midi_audio(input_path=self.__arq_midi.caminho,
                                                output_path=self.__arq_output,
                                                volume=100)  # Todo: volume configuravel pela interface

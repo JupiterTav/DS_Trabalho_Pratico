@@ -7,7 +7,8 @@ from mixer import Mixer
 from ui.janela_principal import JanelaPrincipal
 
 def verificar_dependencias():
-    caminho_local = pathlib.Path("fluidsynth/bin/fluidsynth.exe")
+    base_dir = pathlib.Path(__file__).parent.parent.resolve()
+    caminho_local = base_dir / "fluidsynth" / "bin" / "fluidsynth.exe"
     if not caminho_local.exists() and not shutil.which("fluidsynth"):
         root = tk.Tk()
         root.withdraw()

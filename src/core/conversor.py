@@ -11,7 +11,8 @@ class Conversor:
     def converter_midi_audio(self, *, input_path: str, output_path: str, volume: int) -> bool:
         #    fluidsynth [options] [ soundfonts ] [ midifiles ]
 
-        caminho_local = pathlib.Path("fluidsynth/bin/fluidsynth.exe")
+        base_dir = pathlib.Path(__file__).parent.parent.parent.resolve()
+        caminho_local = base_dir / "fluidsynth" / "bin" / "fluidsynth.exe"
         comando = str(caminho_local) if caminho_local.exists() else "fluidsynth"
 
         cli_conversor_comando = [

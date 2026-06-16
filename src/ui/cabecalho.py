@@ -42,15 +42,22 @@ class Cabecalho(ctk.CTkFrame):
 
     def upload_arq_texto(self, campos_texto: ScrollableCampoTexto):
         self.txt: pathlib.Path = IOManager.carrega_texto()
+        if str(self.txt) == "" or str(self.txt) == ".": # canceled dialog
+            return
+
+        # Limpar campos existentes
+        for campo in campos_texto.campos:
+            campo.campo_texto.delete(0, "end")
+
         quant_lines = 0
         with open(self.txt, 'r') as text:
             for line in text:
+                if len(campos_texto.campos) < quant_lines + 1:
+                    campos_texto.adiciona_campo()
+                
                 campos_texto.campos[quant_lines].campo_texto.delete(0, "end")
                 campos_texto.campos[quant_lines].campo_texto.insert(0, str(line).replace("\n", ""))
                 quant_lines += 1
-
-                if len(campos_texto.campos) < quant_lines + 1:
-                    campos_texto.adiciona_campo()
 
     def download_text(self, campos_texto: ScrollableCampoTexto):
         try:
