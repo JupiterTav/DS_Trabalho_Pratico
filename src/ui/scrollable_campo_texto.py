@@ -19,7 +19,7 @@ class ScrollableCampoTexto(ctk.CTkScrollableFrame):
         self.adiciona_campo()
 
     def adiciona_campo(self) -> CampoTextoEditavel:
-        if self.__ciclo_valores_iniciais % 4 == 0:
+        if self.__ciclo_valores_iniciais % len(self.__oitavas_padrao) == 0:
             self.__ciclo_valores_iniciais = 0
 
         camp_edit: CampoTextoEditavel = CampoTextoEditavel(self,
